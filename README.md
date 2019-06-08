@@ -9,7 +9,7 @@ The purpose of this software library is to simulate virtual FIRST Tech Challenge
 
 A simulator is useful for obtaining results that would be difficult or impossible to obtain in real life. We used this simulator to run 10,000 synthetic tournaments for a variety of tournament configurations and tiebreaker point methods. Thus, each data point is based on more tournaments than have happened in the history of FTC. Due to the law of large numbers, we have confidence in the accuracy of the data.
 
-## Results from the first set of data
+## Results
 
 For several tournament sizes, we tested four TBP methods: losing alliance score (the current method), sum of both alliances' scores, your alliance's score, and your team's OPR. For each TBP method, we calculated the average root-mean-square deviation between the input rankings and the output rankings of all the teams for 10,000 tournaments. The RMSD represents the input/output difference in ranking for an average team in a given tournament. In the table below, the leftmost two columns indicate the tournament type, while the rightmost four columns indicate the corresponding average RMSD for each TBP method.
 
@@ -30,18 +30,23 @@ Teams |Matches per Team|Current| Sum  |Yours | OPR
 ## Conclusions
 
 Here is what can be concluded from this data:
-- Tiebreaker points have a small effect on the output ranking compared to RP
+- In our simulations, tiebreaker points contributed up to 24% of the difference between a team's input and output ranking
   - Using the TBP method of OPR, any differences in a team's input and output rank are due to RP alone
-  - In the case of a Worlds-level tournament, the RP contribute an average difference of 12.111 ranking positions, while the current TBP method contributes an additional average difference of 0.932 ranking positions
+  - The contribution of RP to the RMSD is shown by the OPR TBP method
+  - The contribution of a TBP method to the RMSD is the change in RMSD from the OPR method to the TBP method
+- The chosen TBP method has a greater effect on the output ranking of high-scoring teams as compared to all teams
+  - In the case of a Worlds-level tournament, the RP contribute an average difference of 6.162 ranking positions
+  - The current TBP method contributes an additional average difference of 1.424 ranking positions, which is 18.77% of the total difference
+  - The 'yours' TBP method contributes an additional average difference of 0.407 ranking positions, which is 6.20% of the total difference
 - Using an accurate OPR as the TBP method results in the least difference between input and output rankings
-  - An omniscient simulator knows each team's exact OPR, but an accurate OPR is more difficult to calculate in real life
+  - However, we are not recommending OPR as a TBP method because the accuracy and convenience of the simulated OPR is not attainable in real life
 - Here are the other TBP methods in order of increasing difference between input and output rankings:
   - Your alliance's score
   - Sum of both alliances' scores
   - Losing alliance's score
 - A tournament with 40 teams each playing 9 matches has an average ranking difference less than half that of a tournament with 80 teams each playing 9 matches
   - Therefore, it may be useful to consider organizing the FTC World Championships as 4 divisions of 40 teams each, though this would add an extra round of playoffs
-  - If there is not enough time for such a tournament, note that a division of 40 teams each playing 8 matches has only a slighty larger average ranking difference
+  - If there is not enough time for such a tournament, note that a division of 40 teams each playing 8 matches has only a slightly larger average ranking difference
 
 ## Algorithm Overview
 
