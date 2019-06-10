@@ -12,7 +12,7 @@ There is a desire to improve the FIRST Tech Challenge tiebreaker point (TBP) sys
 
 ## Introduction
 
-[FIRST Tech Challenge](https://www.firstinspires.org/robotics/ftc) (FTC) is an international high school robotics competition put on by the FIRST organization. Teams build robots to compete in tournaments within year-long seasons. An FTC tournament consists of two major parts: the qualification matches and the elimination rounds. In the qualification matches, each team participates in an equivalent number of two versus two matches. Teams are paired with a random partner for each match. The match schedule is set up such that no two teams are paired up more than once or are opponents more than once.
+[FIRST Tech Challenge](https://www.firstinspires.org/robotics/ftc) (FTC) is an international high school robotics competition put on by the FIRST organization. Teams build robots to compete in tournaments within year-long seasons. An FTC tournament consists of two major parts: the qualification matches and the elimination rounds. In the qualification matches, each team participates in an equivalent number of two versus two matches. Teams are paired with a random partner for each match. The match schedule is randomized but set up such that no two teams are paired up more than once or are opponents more than once.
 
 At the conclusion of each match, teams receive ranking points (RP) and tiebreaker points (TBP) dependent on the outcome of said match. The two winning teams (winning alliance) receive two RP, while the two losing teams (losing alliance) receive zero RP. In the event of a tie, all four teams receive one RP.
 
@@ -28,7 +28,7 @@ On top of that, the current TBP method sometimes causes the controversial behavi
 
 Several new TBP methods have been proposed, but it is uncertain which new method is preferable. It would be useful to quantify the performance of the current method and the new methods in order to compare them. Enter the concept of a simulator. Given the match data from a real tournament, a simple simulator can test different TBP methods and report the results. Such a simulator is helpful but limited because the absolute quality of any one TBP method cannot be determined.
 
-Consider a tournament as a transformation of an input ranking of teams to an output ranking of teams. For FTC, this transformation includes RP and TBP. To assess the quality of the transformation, the input and output ranking must be compared. However, the input ranking for a real tournament is largely unknown. To address this problem, this new simulator creates a set of synthetic teams with known scoring potentials (OPR's) and determines a complete and accurate input ranking of this set of teams by ordering their scoring potentials. This simulator also creates a match schedule, simulates the outcomes of those matches, and ranks the teams using a specified TBP method.
+Consider a tournament as a transformation of an input ranking of teams to an output ranking of teams. For FTC, this transformation includes RP and TBP. To assess the quality of the transformation, the input and output ranking must be compared. However, the true input ranking for a real tournament is largely unknown. To address this problem, this new simulator creates a set of synthetic teams with known scoring potentials (OPR's) and determines a complete and accurate input ranking of this set of teams by ordering their scoring potentials. This simulator also creates a match schedule, simulates the outcomes of those matches, and ranks the teams using a specified TBP method.
 
 To produce statistically significant results, a sufficiently large number of tournaments must be considered. However, data from real tournaments is limited. For example, there are only four data points for the 80-team qualifying rounds that happen at a World Championship level, which is not a sufficient amount of data for statistical analysis. The simulator solves this problem because it is able to generate large numbers of 80-team tournaments. In fact, the simulator can easily generate more tournaments of any size than have taken place in the history of FTC.
 
@@ -113,7 +113,7 @@ The schedule is populated with teams match by match. As each team is chosen for 
 
 #### Simulate the Qualification Matches
 
-After a match schedule has been created, an alliance's score in a given match is calculated by summing the scoring potential of both teams. To simulate the real-life variance of a team's score from match to match, each team's score in a given match is varied by ±10%. When the winner and loser of a match have been determined, RP and TBP are assigned accordingly. For the 'OPR' TBP method, the team's scoring potential (without variance) is added after each match.
+After a match schedule has been created, an alliance's score in a given match is calculated by summing the scoring potential of both teams. To simulate the real-life variance of a team's score from match to match, each team's score in a given match is varied by ±10%. When the winner and loser of a match have been determined, RP and TBP are assigned accordingly. (Note: for the 'OPR' TBP method, the team's scoring potential (without variance) is added after each match.)
 
 ## Results
 
