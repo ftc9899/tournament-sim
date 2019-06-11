@@ -17,6 +17,8 @@ class Match:
 	win_score = -1
 	lose_score = -1
 	
+	score_ceiling = -1
+	
 	def __init__(self, red, blue, nu=-1):
 		self.red_alliance = red
 		self.red1 = self.red_alliance[0]
@@ -27,6 +29,8 @@ class Match:
 		self.blue2 = self.blue_alliance[1]
 		
 		self.match_number = nu
+		
+		self.score_ceiling = 800
 	
 	def run_match(self):
 		# compute alliance scores from point distributions
@@ -37,6 +41,12 @@ class Match:
 		self.red2.matches_played += 1
 		self.blue1.matches_played += 1
 		self.blue2.matches_played += 1
+		
+		if (self.score_ceiling != -1):
+			score_total = red_score + blue_score
+			if (score_total > self.score_ceiling):
+				red_score *= self.score_ceiling / score_total
+				blue_score *= self.score_ceiling / score_total
 		
 		if (red_score > blue_score):
 			self.winner = "red"
