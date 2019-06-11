@@ -84,6 +84,8 @@ class Team:
 			self.tp += w_points
 		elif (options.ranking_system == "opr"):
 			self.tp += self.opr
+		elif (options.ranking_system == "u_plus_lose"):
+			self.tp += w_points + l_points
 	
 	def lose(self, w_points, l_points):
 		if (options.ranking_system == "current"):
@@ -94,6 +96,8 @@ class Team:
 			self.tp += l_points
 		elif (options.ranking_system == "opr"):
 			self.tp += self.opr
+		elif (options.ranking_system == "u_plus_lose"):
+			self.tp += l_points + l_points
 	
 	def tie(self, w_points, l_points):
 		self.rp += 1
@@ -106,6 +110,8 @@ class Team:
 			self.tp += w_points
 		elif (options.ranking_system == "opr"):
 			self.tp += self.opr
+		elif (options.ranking_system == "u_plus_lose"):
+			self.tp += w_points + l_points
 	
 	def reset(self):
 		self.rp = 0

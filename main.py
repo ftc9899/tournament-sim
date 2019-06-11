@@ -37,7 +37,7 @@ assert tournaments > 0, 'number of tournaments expected but not given (-n or --t
 
 assert teams % 4 == 0, 'number of teams must be divisible by 4'
 
-assert options.ranking_system == "current" or options.ranking_system == "sum" or options.ranking_system == "yours" or options.ranking_system == "opr", 'provided ranking system not recognized, options are "current", "sum", "yours", or "opr"'
+assert options.ranking_system == "current" or options.ranking_system == "sum" or options.ranking_system == "yours" or options.ranking_system == "opr" or options.ranking_system == "u_plus_lose", 'provided ranking system not recognized, options are "current", "sum", "yours", "opr", or "u_plus_lose"'
 
 print('Running', tournaments, 'tournaments, all with', matches_per_team, 'matches each for', teams, 'teams\n')
 
