@@ -152,19 +152,23 @@ class Tournament:
 			t = Team(i, -1)
 			self.teams.append(t)
 		
-		# generate normal distribution centered around an opr of 150
-		#  and a standard distribution such that an opr of 315 or
-		#  an opr of -15 is 3 sigma
-		oprs = np.random.normal(150, 55, n)
+		# if more than 32 teams, use worlds-like distribution
+		if (n > 32):
+			oprs = np.random.normal(150, 55, n)
+		# if 32 > n > 24, use state-like distribution
+		elif (n > 24):
+			oprs = np.random.normal(125, 55, n)
+		# else for smaller tournaments, use qual-like distribution
+		else:
+			oprs = np.random.normal(100, 55, n)
 		
 		oprs.sort()
 		o = 0
 		for t in reversed(self.teams):
 			temp = int(oprs[o])
 			
-			# max opr is 315, min is 10 (matches Houston 2019)
-			if temp > 315: temp = 315
-			elif temp < 10: temp = 10
+			# min opr is 10
+			if temp < 10: temp = 10
 			
 			t.opr = temp
 			o += 1
@@ -180,10 +184,10 @@ class Tournament:
 	def rankings(self):
 		self.rank()
 		
-		print('{:^20}'.format('Team Name') + '|' + '{:^6}'.format('RP') + '|' + '{:^6}'.format('TP') + '|' + '{:^4}'.format('MP'))
-		print('{:->20}'.format('') + '|' + '{:->6}'.format('') + '|' + '{:->6}'.format('') + '|' + '{:->4}'.format(''))
+		print('{:^20}'.format('Team Name') + '|' + '{:^6}'.format('RP') + '|' + '{:^6}'.format('TP') + '|' + '{:^4}'.format('MP') + '|' + '{:^5}'.format('OPR'))
+		print('{:->20}'.format('') + '|' + '{:->6}'.format('') + '|' + '{:->6}'.format('') + '|' + '{:->4}'.format('') + '|' + '{:->5}'.format(''))
 		for t in self.teams:
-			print('{:20}'.format(t.name) + '|' + '{:>6}'.format(t.rp) + '|' + '{:>6}'.format(t.tp) + '|' + '{:>4}'.format(t.matches_played))
+			print('{:20}'.format(t.name) + '|' + '{:>6}'.format(t.rp) + '|' + '{:>6}'.format(t.tp) + '|' + '{:>4}'.format(t.matches_played) + '|' + '{:>5}'.format(t.opr))
 		print()
 	
 	def stats(self):
