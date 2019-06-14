@@ -47,8 +47,10 @@ results = []
 for i in range(0, teams_to_track):
 	results.append([])
 
-#results = [[1],[2],[3],[4],[5],[6],[7],[8]]
-#first_line = 'Rank'
+# keep track of sum of RMSDs for each tournament,
+#  then divide by the number of tournaments at the end
+#  to report the average RMSD
+sum_of_RMSDs = 0
 
 for i in range(0, tournaments):
 	#first_line = first_line + ',T' + str(i + 1)
@@ -61,93 +63,24 @@ for i in range(0, tournaments):
 	
 	test_tournament.rank()
 	
+	sum_of_squared_residuals = 0
+	
+	for r in range(1, teams_to_track + 1):
+		for t in range(len(test_tournament.teams)):
+			if (test_tournament.teams[t].number == r):
+				sum_of_squared_residuals += math.pow((t + 1) - r, 2)
+	
+	sum_of_RMSDs += math.sqrt(sum_of_squared_residuals/(teams_to_track - 1))
+	
 	# TODO: This for loop could just loop through all the teams if
 	#  all the teams will always be tracked
 	for r in range(1, teams_to_track + 1):
 		for t in range(len(test_tournament.teams)):
 			if (test_tournament.teams[t].number == r):
-				#print(str(r) + ',' + str(t + 1))
 				results[r - 1].append(t + 1)
 				break
 	
 	if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
 	else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)
 
-#print('\n' + first_line)
-
-'''for i in results:
-	line = ''
-	for j in i:
-		line = line + str(j) + ','
-	print(line[:-1])'''
-
-residuals = []
-
-r = 1
-for i in results:
-	for j in i:
-		residuals.append(j - r)
-	r += 1
-
-sum_of_squared_residuals = 0
-
-for i in residuals:
-	sum_of_squared_residuals += math.pow(i, 2)
-
-RMSD = math.sqrt(sum_of_squared_residuals/((tournaments * teams_to_track) - 1))
-
-print('\n\nRMSD for all teams:', RMSD)
-
-residuals = []
-
-r = 1
-for i in results:
-	for j in i:
-		residuals.append(j - r)
-	r += 1
-	if r == 9: break
-
-sum_of_squared_residuals = 0
-
-for i in residuals:
-	sum_of_squared_residuals += math.pow(i, 2)
-
-RMSD = math.sqrt(sum_of_squared_residuals/((tournaments * 8) - 1))
-
-print('\nRMSD for top 8 teams (by OPR):', RMSD)
-
-residuals = []
-
-r = 1
-for i in results:
-	for j in i:
-		residuals.append(j - r)
-	r += 1
-	if r == 5: break
-
-sum_of_squared_residuals = 0
-
-for i in residuals:
-	sum_of_squared_residuals += math.pow(i, 2)
-
-RMSD = math.sqrt(sum_of_squared_residuals/((tournaments * 4) - 1))
-
-print('\nRMSD for top 4 teams (by OPR):', RMSD)
-
-'''residuals = []
-
-r = 1
-for i in results:
-	for j in i:
-		residuals.append(j - r)
-	r += 1
-	if r == 2: break
-
-sum_of_squared_residuals = 0
-
-for i in residuals:
-	sum_of_squared_residuals += math.pow(i, 2)
-
-RMSD = math.sqrt(sum_of_squared_residuals/((tournaments * 1) - 1))
-
-print('\nRMSD for top team (by OPR):', RMSD)'''
+print('\n\nRMSD for all teams:', sum_of_RMSDs / tournaments)
