@@ -10,6 +10,8 @@ class Tournament:
 	matches_per_team = 0
 	number_of_matches = 0
 	
+	ceiling_hits = 0
+	
 	def __init__(self, te, ma):
 		# set up the array of teams, which will also keep track of rankings
 		self.teams = []
@@ -167,15 +169,17 @@ class Tournament:
 		for t in reversed(self.teams):
 			temp = int(oprs[o])
 			
-			# min opr is 10
+			# min opr is 10, max is 450
 			if temp < 10: temp = 10
+			if temp > 450: temp = 450
 			
 			t.opr = temp
 			o += 1
 	
 	def run_tournament(self):
 		for m in self.matches:
-			m.run_match()
+			# run_match returns True if the "ceiling" was hit. Keep track of that
+			if(m.run_match()): self.ceiling_hits += 1
 	
 	def rank(self):
 		self.teams.sort()
