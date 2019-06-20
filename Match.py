@@ -1,3 +1,5 @@
+import options
+
 class Match:
 	
 	red_score = -1
@@ -17,8 +19,6 @@ class Match:
 	win_score = -1
 	lose_score = -1
 	
-	score_ceiling = -1
-	
 	def __init__(self, red, blue, nu=-1):
 		self.red_alliance = red
 		self.red1 = self.red_alliance[0]
@@ -29,10 +29,10 @@ class Match:
 		self.blue2 = self.blue_alliance[1]
 		
 		self.match_number = nu
-		
-		self.score_ceiling = 800
 	
 	def run_match(self):
+		hit_ceiling = False
+		
 		# compute alliance scores from point distributions
 		red_score = self.red1.get_points() + self.red2.get_points()
 		blue_score = self.blue1.get_points() + self.blue2.get_points()
@@ -42,11 +42,24 @@ class Match:
 		self.blue1.matches_played += 1
 		self.blue2.matches_played += 1
 		
-		if (self.score_ceiling != -1):
+		# if score "ceiling" is enabled, do additional calculations:
+		#  assume each team scores at 50% efficency after the score "ceiling" is reached,
+		#  so find the theoretical point in the match where the "ceiling" was reached,
+		#  and give each alliance 50% of points they earned above that "ceiling"
+		if (options.score_ceiling != -1):
 			score_total = red_score + blue_score
-			if (score_total > self.score_ceiling):
-				red_score *= self.score_ceiling / score_total
-				blue_score *= self.score_ceiling / score_total
+			if (score_total > options.score_ceiling):
+				scale_factor = options.score_ceiling / score_total
+				
+				# calculate theoretical score at the point in the match when the teams hit the ceiling
+				temp_red = red_score * scale_factor
+				temp_blue = blue_score * scale_factor
+				
+				# assume that after the ceiling was hit, the teams scored at some percent of their normal efficiency
+				red_score = temp_red + ((red_score - temp_red) * 0.5)
+				blue_score = temp_blue + ((blue_score - temp_blue) * 0.5)
+				
+				hit_ceiling = True
 		
 		if (red_score > blue_score):
 			self.winner = "red"
@@ -80,6 +93,8 @@ class Match:
 		
 		# assign rp and tp given the result of the match
 		self._give_points()
+		
+		return hit_ceiling
 	
 	def stats(self):
 		print('Match number ' + str(self.match_number))
@@ -89,20 +104,28 @@ class Match:
 		print('Losing score:  ' + str(self.lose_score) + ' (teams ' + str(self.lose1) + ' and ' + str(self.lose2) + ')\n')
 	
 	def _give_points(self):
+		if (self.winner == "tie"):
+			self.red1.tie(self.win_score, self.lose_score)
+			self.red2.tie(self.win_score, self.lose_score)
+			self.blue1.tie(self.win_score, self.lose_score)
+			self.blue2.tie(self.win_score, self.lose_score)
+			return
+		
+		# if winner-take-all is enabled, increase the win score by a specified percentage
+		#  and decrease the lose score by the same specified percentage
+		# Do this here because a tie should not be affected by this
+		if (options.wta_proportion is not None):
+			self.win_score *= (1 + options.wta_proportion)
+			self.lose_score *= (1 - options.wta_proportion)
+		
 		if (self.winner == "red"):
 			self.red1.win(self.win_score, self.lose_score)
 			self.red2.win(self.win_score, self.lose_score)
 			self.blue1.lose(self.win_score, self.lose_score)
 			self.blue2.lose(self.win_score, self.lose_score)
 			
-		elif (self.winner == "blue"):
+		else:
 			self.red1.lose(self.win_score, self.lose_score)
 			self.red2.lose(self.win_score, self.lose_score)
 			self.blue1.win(self.win_score, self.lose_score)
 			self.blue2.win(self.win_score, self.lose_score)
-			
-		else:
-			self.red1.tie(self.win_score, self.lose_score)
-			self.red2.tie(self.win_score, self.lose_score)
-			self.blue1.tie(self.win_score, self.lose_score)
-			self.blue2.tie(self.win_score, self.lose_score)
