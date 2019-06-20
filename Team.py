@@ -76,6 +76,7 @@ class Team:
 	def win(self, w_points, l_points):
 		self.rp += 2
 		
+		# TODO: Add eval (to call appropriate TBP method as a function)?
 		if (options.ranking_system == "current"):
 			self.tp += l_points
 		elif (options.ranking_system == "sum"):
@@ -86,6 +87,8 @@ class Team:
 			self.tp += self.opr
 		elif (options.ranking_system == "u_plus_lose"):
 			self.tp += w_points + l_points
+		elif (options.ranking_system == "inv_opr"):
+			self.tp -= self.opr
 	
 	def lose(self, w_points, l_points):
 		if (options.ranking_system == "current"):
@@ -98,6 +101,8 @@ class Team:
 			self.tp += self.opr
 		elif (options.ranking_system == "u_plus_lose"):
 			self.tp += l_points + l_points
+		elif (options.ranking_system == "inv_opr"):
+			self.tp -= self.opr
 	
 	def tie(self, w_points, l_points):
 		self.rp += 1
@@ -112,6 +117,8 @@ class Team:
 			self.tp += self.opr
 		elif (options.ranking_system == "u_plus_lose"):
 			self.tp += w_points + l_points
+		elif (options.ranking_system == "inv_opr"):
+			self.tp -= self.opr
 	
 	def reset(self):
 		self.rp = 0
