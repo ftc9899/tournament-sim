@@ -79,7 +79,7 @@ Team Number |  RP  | TBP | MP | OPR
 Looking at the above rankings, a transformation has occurred between the input and output rankings. The method chosen to assess the quality of this transformation is the [root-mean-square deviation](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSD) of the differences between each team's input and output ranking (D<sub>i</sub>), calculated using the following equation:
 
 <p align="center">
-  <img src="https://github.com/ftc9899/tournament-sim/blob/master/rmsd.png?raw=true" alt="RMSD equation">
+  <img src="https://github.com/ftc9899/tournament-sim/blob/master/images/rmsd.png?raw=true" alt="RMSD equation">
 </p>
 
 Note that the RMSD is a type of standard deviation and follows the [empirical rule](https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule) (the 68-95-99.7 rule). For example, 68% of teams will experience an absolute difference in ranking less than or equal to the RMSD.
