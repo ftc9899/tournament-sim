@@ -1,6 +1,9 @@
 # tournament-sim
 
-Document version 1.0
+Revision | Description
+---------|----------------
+1.0      | Initial Release
+2.0      | Added "random" TBP method as a baseline and "u_plus_lose" TBP method. Evaluated effects of scarcity and winner-take-all game features. Adjusted average OPR based on tournament size. Conclusion: Adoption of the "yours" TBP method is still recommended.
 
 ![9899 logo](https://avatars1.githubusercontent.com/u/36021491?s=100&v=4)
 
@@ -8,7 +11,7 @@ Black Diamond Robotics, FTC Team 9899
 
 ## Abstract
 
-There is a desire to improve the FIRST Tech Challenge tiebreaker point (TBP) system. This paper introduces a simulator which can help to quantify proposed TBP methods. Given a number of teams and matches per team, the simulator is able to generate a large volume of synthetic tournament data that reflects actual tournament data. It applies a root-mean-square deviation analysis to quantify each proposed TBP system. Based on the results, a TBP system where alliances receive their own score appears to be a promising method.
+There is a desire to improve the FIRST Tech Challenge tiebreaker point (TBP) system. This paper introduces a simulator which can help to quantify the effectiveness of proposed TBP systems. Given a number of teams and matches per team, the simulator is able to generate a large volume of synthetic tournament data that reflects actual tournament data. It applies a root-mean-square deviation analysis to quantify the effectiveness of each proposed TBP system. Based on the results, a TBP system where alliances receive their own score appears to be a promising method.
 
 ## Introduction
 
@@ -76,7 +79,7 @@ Team Number |  RP  | TBP | MP | OPR
 15          |     0| 1011|   5|  60
 16          |     0|  813|   5|  23
 
-Looking at the above rankings, a transformation has occurred between the input and output rankings. The method chosen to assess the quality of this transformation is the [root-mean-square deviation](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSD) of the differences between each team's input and output ranking (D<sub>i</sub>), calculated using the following equation:
+Looking at the above rankings, a transformation has occurred between the input and output rankings. The method chosen to assess the quality of this transformation is the [root-mean-square deviation](https://en.wikipedia.org/wiki/Root-mean-square_deviation) (RMSD) of the differences D<sub>i</sub> between each team's input and output ranking, calculated using the following equation:
 
 <p align="center">
   <img src="https://github.com/ftc9899/tournament-sim/blob/master/images/rmsd.png?raw=true" alt="RMSD equation">
@@ -115,62 +118,97 @@ The schedule is populated with teams match by match. As each team is chosen for 
 
 After a match schedule has been created, an alliance's score in a given match is calculated by summing the scoring potential of both teams. To simulate the real-life variance of a team's score from match to match, each team's score in a given match is varied by ±10%. When the winner and loser of a match have been determined, RP and TBP are assigned accordingly. (Note: for the 'OPR' TBP method, the team's scoring potential (without variance) is added after each match.)
 
+To simulate the effects of scarcity as a game feature, the user can specify a ceiling for the total match score.  If the match score reaches the ceiling, the teams score at a reduced rate for the remainder of the match. The theoretical point at which the match score exceeded the ceiling is determined by scaling the two reported alliance scores by the same factor. After being scaled, the alliance scores sum to the ceiling. Then, each alliance receives 50% of the additional points they would have scored.
+
+To simulate the effects of winner-take-all as a game feature, the user can specify a proportion of the alliance score that is affected by a winner-take-all feature. It is assumed that the stronger alliance will claim more points from any winner-take-all features. Accordingly, the winning alliance's score is increased by the specified proportion, while the losing alliance's score is decreased by the specified proportion.
+
+There is no explicit algorithm to simulate the effects of defense; this was a deliberate choice. Defense tends to reduce the scores of both alliances, which subsequently reduces the amount of TBP gained from a match. Therefore, there is less motivation for a team to play defense during the qualification matches than during the elimination rounds. Additionally, few teams practice defensive tactics enough to be effective. When defense is attempted, it can be very successful or it can result in penalties assessed against the defending team. Given these factors, any real-world effects of defense are accounted for by the ±10% variance that is applied to each team's scoring potential in every match.
+
 ## Results
 
-For several tournament sizes, four TBP methods were tested: losing alliance score (the current method), sum of both alliances' scores, your alliance's score, and your team's OPR. The first three methods were chosen because they were proposed and supported by the FTC community. OPR was included as a basis for comparison because it represents the ideal TBP method. For each TBP method, the average RMSD between the input rankings and the output rankings of all the teams for 10,000 tournaments was calculated, a total of 2.8 million tournaments. The RMSD represents the average input/output difference in ranking for each team in a given tournament.
+For several tournament sizes, six TBP methods were tested: losing alliance score (the current method), sum of both alliances' scores, your alliance's score plus the losing alliance's score, your alliance's score, your team's OPR, and randomly generated TBP. The first four methods were chosen because they were proposed and supported by the FTC community. OPR was included as a basis for comparison because it represents the ideal TBP method. Randomly generated TBP is also a basis for comparison because it represents a null TBP method. For each TBP method, the average RMSD between the input rankings and the output rankings of all the teams for 10,000 tournaments was calculated, a total of 4.2 million tournaments. The RMSD represents the average input/output difference in ranking for each team in a given tournament.
 
-The table below shows the results for all teams. The leftmost two columns indicate the tournament type, while the rightmost four columns indicate the corresponding average RMSD for each TBP method.
+These initial tournaments were run without incoporating scarcity or winner-take-all features. The table below shows the results for all teams. The leftmost two columns indicate the tournament type, while the rightmost four columns indicate the corresponding average RMSD for each TBP method.
 
-Teams |Matches per Team|Current| Sum  |Yours | OPR
-------|----------------|-------|------|------|------
-16    |5               |2.972  |2.876 |2.781 |2.489
-24    |5               |4.600  |4.477 |4.360 |4.010
-32    |5               |6.195  |6.063 |5.901 |5.437
-32    |6               |5.798  |5.682 |5.549 |5.177
-40    |8               |6.586  |6.461 |6.340 |6.003
-40    |9               |6.285  |6.165 |6.039 |5.761
-80    |9               |13.043 |12.812|12.630|12.111
+Teams |Matches per Team|Random|Current| Sum  |U+Lose|Yours | OPR
+------|----------------|------|-------|------|------|------|-----
+16    |5               |3.415 |2.916  |2.836 |2.773 |2.731 |2.462
+24    |5               |5.313 |4.518  |4.406 |4.328 |4.293 |3.939
+32    |5               |7.222 |6.150  |6.017 |5.903 |5.872 |5.425
+32    |6               |6.722 |5.774  |5.649 |5.561 |5.494 |5.136
+40    |8               |7.583 |6.578  |6.466 |6.394 |6.324 |6.023
+40    |9               |7.188 |6.276  |6.162 |6.091 |6.053 |5.746
+80    |9               |14.864|13.025 |12.816|12.722|12.612|12.090
 
-Note that the RMSD increases as the number of teams increases (for the same number of matches) and decreases as the number of matches increases (for the same number of teams). This indicates that the RMSD can be used to quantify the effect of the number of matches per team on tournament outcomes. Regardless of the tournament configuration, the "current" method has the highest RMSD, followed by "sum" and "yours", respectively.
+Note that the RMSD increases as the number of teams increases (for the same number of matches) and decreases as the number of matches increases (for the same number of teams). This indicates that the RMSD can be used to quantify the effect of the number of matches per team on tournament outcomes. Regardless of the tournament configuration, the "current" method has the highest RMSD, followed by "sum", "u_plus_lose", and "yours", respectively.
 
-![A nice graph of the data from the above table](https://github.com/ftc9899/tournament-sim/blob/master/tbp_comparison.PNG?raw=true)
+![Graph of the data from the above table](https://github.com/ftc9899/tournament-sim/blob/master/images/vanilla_all_teams.png?raw=true)
 
-Using the TBP method of OPR, any differences in a team's input and output rank are due to RP alone. This is because teams with identical RP will have an output rank order that matches their input rank order. The contribution of a TBP method to the RMSD is the difference in RMSD from the OPR method to the TBP method, which is expressed as a percent in the graph below.
+Using the TBP method of OPR, any differences in a team's input and output rank are due to RP alone. This is because teams with identical RP will have an output rank order that matches their input rank order. The OPR method can be considered 100% ideal. On the other end of the spectrum, the random method represents no deliberate effort to rank teams and can be considered 0% ideal. A representative percentage on a scale from 0 - 100% can be determined for all the other TBP methods:
 
-![Another graph](https://github.com/ftc9899/tournament-sim/blob/master/tbp_percent_comparison.PNG?raw=true)
+<p align="center">
+  <img src="https://github.com/ftc9899/tournament-sim/blob/master/images/idealness.png?raw=true" alt="Idealness equation">
+</p>
+
+The idealness of a given method for a given tournament size and number of matches per team was calculated by subracting it's RMSD r from the corresponding random RMSD R<sub>random</sub> and dividing by the difference between the random RMSD and the corresponding OPR RMSD R<sub>OPR</sub>.
+
+![Idealness of different methods for different tournaments sizes: all teams](https://github.com/ftc9899/tournament-sim/blob/master/images/vanilla_percent_all_teams.png?raw=true)
 
 In a tournament, the top four teams (according to the output rankings) become the alliance captains and have the greatest influence on the tournament's outcome. Tracking only the top four teams (according to the input rankings) and doing the same analysis produces data that has key differences:
 
-Teams |Matches per Team|Current| Sum  |Yours | OPR
-------|----------------|-------|------|------|------
-16    |5               |2.822  |2.614 |2.525 |2.132
-24    |5               |4.078  |3.740 |3.612 |3.219
-32    |5               |5.255  |4.766 |4.588 |4.066
-32    |6               |4.732  |4.349 |4.174 |3.731
-40    |8               |4.731  |4.330 |4.268 |3.888
-40    |9               |4.379  |4.032 |3.899 |3.620
-80    |9               |7.586  |6.815 |6.569 |6.162
+Teams |Matches per Team|Random|Current| Sum  |U+Lose|Yours | OPR
+------|----------------|------|-------|------|------|------|-----
+16    |5               |3.233 |2.675  |2.515 |2.428 |2.377 |2.056
+24    |5               |4.802 |3.905  |3.578 |3.520 |3.465 |3.049
+32    |5               |6.404 |5.158  |4.675 |4.579 |4.535 |4.004
+32    |6               |5.680 |4.670  |4.235 |4.134 |4.089 |3.675
+40    |8               |5.646 |4.700  |4.343 |4.323 |4.203 |3.878
+40    |9               |5.246 |4.421  |4.014 |3.987 |3.954 |3.600
+80    |9               |9.210 |7.515  |6.767 |6.770 |6.629 |6.178
 
 Note that the RMSD's for these teams are lower than for all teams and are less sensitive to the number of teams. However, these RMSD's decrease more sharply between the different TBP methods.
 
-![A nice graph of the additional data from the above table](https://github.com/ftc9899/tournament-sim/blob/master/top_4_tbp_comparison.PNG?raw=true)
+![Graph of the additional data from the above table](https://github.com/ftc9899/tournament-sim/blob/master/images/vanilla_top_4.png?raw=true)
 
-Comparing the top 4 teams to all teams, the contribution of a TBP method to the RMSD is magnified, as shown in the graph below.
+Comparing the top 4 teams to all teams, the idealness of the "sum", "u_plus_lose", and "yours" TBP methods has increased, while the idealness of the current TBP method has _decreased_, creating a significant disparity between the current method and the other methods.
 
-![Yet another graph](https://github.com/ftc9899/tournament-sim/blob/master/top_4_tbp_percent_comparison.PNG?raw=true)
+![Idealness of different methods for different tournaments sizes: top 4 teams](https://github.com/ftc9899/tournament-sim/blob/master/images/vanilla_percent_top_4.png?raw=true)
+
+After the initial data was collected, the additions of scarcity and winner-take-all features were tested independently. The graph below shows the effect of a low score ceiling (i.e. a high scarcity scenario) on TBP for all teams. Each tournament had a ceiling equal to four times the average team OPR. In this configuration, teams were affected by the ceiling in about 50% of matches, according to match statistics. This is an extreme case because scarcity has rarely been a factor in qualification matches in past FTC games, even at the World Championship level. When compared to the previous results for all teams, scarcity appears to significantly reduce the idealness of the current TBP method, while the other methods are relatively unaffected.
+
+![Idealness of different methods in a high-scarcity scenario: all teams](https://github.com/ftc9899/tournament-sim/blob/master/images/low_ceiling_all_teams.png?raw=true)
+
+For the top 4 teams, a high scarcity game causes the idealness of the current method to decrease by 5-15 percentage points as compared to a game where scarcity is not a factor. The other methods are still relatively unaffected.
+
+![Idealness of different methods in a high-scarcity scenario: top 4 teams](https://github.com/ftc9899/tournament-sim/blob/master/images/low_ceiling_top_4.png?raw=true)
+
+The graph below shows the effect of a relatively large winner-take-all proportion (0.3) on TBP for all teams. This is also an extreme case because winner-take-all elements of previous FTC games have not contributed this large of a proportion to an alliance's final score. When compared to the initial results for all teams, winner-take-all game elements do not significantly change the results.
+
+![Idealness of different methods in an extreme winner-take-all scenario: all teams](https://github.com/ftc9899/tournament-sim/blob/master/images/extreme_wta_all_teams.png?raw=true)
+
+For the top 4 teams, a game with extreme winner-take-all elements also does not significantly change the results.
+
+![Idealness of different methods in an extreme winner-take-all scenario: top 4 teams](https://github.com/ftc9899/tournament-sim/blob/master/images/extreme_wta_top_4.png?raw=true)
+
+The following two graphs represent tournaments where the game has a high score ceiling (low scarcity) and a relatively small winner-take-all proportion (0.1). The high ceiling was the same for all tournament sizes: four times the OPR of a team that is one standard deviation above the mean at a World Championship. These added elements did not change the results significantly compared to the initial results.
+
+![Idealness of different methods in a low-scarcity, realistic winner-take-all scenario: all teams](https://github.com/ftc9899/tournament-sim/blob/master/images/all_factors_all_teams.png?raw=true)
+
+The story is the same for the top 4 teams: the added elements did not change the results significantly compared to the initial results.
+
+![Idealness of different methods in a low-scarcity, realistic winner-take-all scenario: top 4 teams](https://github.com/ftc9899/tournament-sim/blob/master/images/all_factors_top_4.png?raw=true)
 
 ## Conclusions
 
 Here is what can be concluded from these results:
-- In these simulations, tiebreaker points contributed up to 24% of the difference between a team's input and output ranking
-- The chosen TBP method has a greater effect on the output ranking of high-scoring teams as compared to all teams
-  - In the case of a Worlds-level tournament, the RP contribute an average difference of 6.162 ranking positions
-  - The current TBP method contributes an additional average difference of 1.424 ranking positions, which is 18.77% of the total difference
-  - The 'yours' TBP method contributes an additional average difference of 0.407 ranking positions, which is 6.20% of the total difference
+- Every time the losing alliance's score is a component of TBP, idealness decreases
+- Every time an alliance's own score is a component of TBP, idealness increases
+- In these simulations, the current TBP method is usually about halfway between the random and ideal TBP methods (50% ideal), while the other methods are often 70-80% ideal
 - Using an accurate OPR as the TBP method results in the least difference between input and output rankings
   - However, using OPR as a TBP method is not recommended because the accuracy and convenience of the simulated OPR is not attainable in real life
 - Here are the other TBP methods in order of increasing difference between input and output rankings:
   - Your alliance's score
+  - Your alliance's score added to the losing alliance's score
   - Sum of both alliances' scores
   - Losing alliance's score
 - A tournament with 40 teams each playing 9 matches has an average ranking difference less than half that of a tournament with 80 teams each playing 9 matches
@@ -179,4 +217,4 @@ Here is what can be concluded from these results:
 
 ### Recommendations
 
-It has been observed that the RP system rewards both the offensive and defensive capability of an alliance. Offense scores the points required to win a match, while defense can slow down a strong opponent enough to win a match. Contrary to this, the only capability rewarded by the current TBP method is the audacity and the ability to score for one's opponent. And finally, the data shows that rewarding strength of schedule through TBP (the current method) is not as effective as rewarding offense (i.e. receiving your alliance's score as TBP each match). Therefore, adopting the TBP method of each alliance receiving TBP equivalent to their alliance's score is recommended.
+It has been observed that the RP system rewards both the offensive and defensive capability of an alliance. Offense scores the points required to win a match, while defense can slow down a strong opponent enough to win a match. Contrary to this, the only capability rewarded by the current TBP method is the audacity and the ability to score for one's opponent. And finally, the data shows that rewarding strength of schedule through TBP (the current method) is not as effective as rewarding offense (i.e. receiving your alliance's score as TBP each match). This assertion is still true for games that incorporate scarcity and/or winner-take-all features. Therefore, adopting the TBP method of each alliance receiving TBP equivalent to their alliance's score in each match is recommended.
