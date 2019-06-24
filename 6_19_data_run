@@ -1,0 +1,32 @@
+# include a realistic ceiling and wta proportion
+python main.py -t 16 -m 5 -n 10000 -r current -c 820 -w 0.1
+python main.py -t 24 -m 5 -n 10000 -r current -c 820 -w 0.1
+python main.py -t 32 -m 5 -n 10000 -r current -c 820 -w 0.1
+python main.py -t 32 -m 6 -n 10000 -r current -c 820 -w 0.1
+python main.py -t 40 -m 8 -n 10000 -r current -c 820 -w 0.1
+python main.py -t 40 -m 9 -n 10000 -r current -c 820 -w 0.1
+python main.py -t 80 -m 9 -n 10000 -r current -c 820 -w 0.1
+
+python main.py -t 16 -m 5 -n 10000 -r sum -c 820 -w 0.1
+python main.py -t 24 -m 5 -n 10000 -r sum -c 820 -w 0.1
+python main.py -t 32 -m 5 -n 10000 -r sum -c 820 -w 0.1
+python main.py -t 32 -m 6 -n 10000 -r sum -c 820 -w 0.1
+python main.py -t 40 -m 8 -n 10000 -r sum -c 820 -w 0.1
+python main.py -t 40 -m 9 -n 10000 -r sum -c 820 -w 0.1
+python main.py -t 80 -m 9 -n 10000 -r sum -c 820 -w 0.1
+
+python main.py -t 16 -m 5 -n 10000 -r u_plus_lose -c 820 -w 0.1
+python main.py -t 24 -m 5 -n 10000 -r u_plus_lose -c 820 -w 0.1
+python main.py -t 32 -m 5 -n 10000 -r u_plus_lose -c 820 -w 0.1
+python main.py -t 32 -m 6 -n 10000 -r u_plus_lose -c 820 -w 0.1
+python main.py -t 40 -m 8 -n 10000 -r u_plus_lose -c 820 -w 0.1
+python main.py -t 40 -m 9 -n 10000 -r u_plus_lose -c 820 -w 0.1
+python main.py -t 80 -m 9 -n 10000 -r u_plus_lose -c 820 -w 0.1
+
+python main.py -t 16 -m 5 -n 10000 -r yours -c 820 -w 0.1
+python main.py -t 24 -m 5 -n 10000 -r yours -c 820 -w 0.1
+python main.py -t 32 -m 5 -n 10000 -r yours -c 820 -w 0.1
+python main.py -t 32 -m 6 -n 10000 -r yours -c 820 -w 0.1
+python main.py -t 40 -m 8 -n 10000 -r yours -c 820 -w 0.1
+python main.py -t 40 -m 9 -n 10000 -r yours -c 820 -w 0.1
+python main.py -t 80 -m 9 -n 10000 -r yours -c 820 -w 0.1

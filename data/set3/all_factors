@@ -1,0 +1,336 @@
+Running 10000 tournaments, all with 5 matches each for 16 teams, using the current TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 2.9097509255869576
+
+RMSD for top 4 teams (by OPR): 2.7068032168807257
+
+Total ceiling hits / total number of matches: 9.5e-05 
+
+Running 10000 tournaments, all with 5 matches each for 24 teams, using the current TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 4.505950911921318
+
+RMSD for top 4 teams (by OPR): 3.890457892005755
+
+Total ceiling hits / total number of matches: 9.333333333333333e-05 
+
+Running 10000 tournaments, all with 5 matches each for 32 teams, using the current TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.142986939610368
+
+RMSD for top 4 teams (by OPR): 5.173240933493565
+
+Total ceiling hits / total number of matches: 0.0019075 
+
+Running 10000 tournaments, all with 6 matches each for 32 teams, using the current TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 5.760253474304858
+
+RMSD for top 4 teams (by OPR): 4.589351275077331
+
+Total ceiling hits / total number of matches: 0.002002083333333333 
+
+Running 10000 tournaments, all with 8 matches each for 40 teams, using the current TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.592502425544757
+
+RMSD for top 4 teams (by OPR): 4.799785697393011
+
+Total ceiling hits / total number of matches: 0.02242625 
+
+Running 10000 tournaments, all with 9 matches each for 40 teams, using the current TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.277824448078744
+
+RMSD for top 4 teams (by OPR): 4.418365106550493
+
+Total ceiling hits / total number of matches: 0.022774444444444444 
+
+Running 10000 tournaments, all with 9 matches each for 80 teams, using the current TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 13.039104860830367
+
+RMSD for top 4 teams (by OPR): 7.481501242735862
+
+Total ceiling hits / total number of matches: 0.02263611111111111 
+
+Running 10000 tournaments, all with 5 matches each for 16 teams, using the sum TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 2.8327806108008073
+
+RMSD for top 4 teams (by OPR): 2.4869058468953487
+
+Total ceiling hits / total number of matches: 0.0001 
+
+Running 10000 tournaments, all with 5 matches each for 24 teams, using the sum TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 4.420609764973002
+
+RMSD for top 4 teams (by OPR): 3.5754528269337666
+
+Total ceiling hits / total number of matches: 6.666666666666667e-05 
+
+Running 10000 tournaments, all with 5 matches each for 32 teams, using the sum TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.013480926709554
+
+RMSD for top 4 teams (by OPR): 4.65432459588051
+
+Total ceiling hits / total number of matches: 0.0019525 
+
+Running 10000 tournaments, all with 6 matches each for 32 teams, using the sum TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 5.644322307223345
+
+RMSD for top 4 teams (by OPR): 4.232678619972935
+
+Total ceiling hits / total number of matches: 0.0020145833333333335 
+
+Running 10000 tournaments, all with 8 matches each for 40 teams, using the sum TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.469569282829841
+
+RMSD for top 4 teams (by OPR): 4.340016971231865
+
+Total ceiling hits / total number of matches: 0.0227075 
+
+Running 10000 tournaments, all with 9 matches each for 40 teams, using the sum TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.16168685616648
+
+RMSD for top 4 teams (by OPR): 3.9707299918285046
+
+Total ceiling hits / total number of matches: 0.022844444444444445 
+
+Running 10000 tournaments, all with 9 matches each for 80 teams, using the sum TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 12.82295923022125
+
+RMSD for top 4 teams (by OPR): 6.757711608324548
+
+Total ceiling hits / total number of matches: 0.023087777777777777 
+
+Running 10000 tournaments, all with 5 matches each for 16 teams, using the u_plus_lose TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 2.760011904450052
+
+RMSD for top 4 teams (by OPR): 2.4435481367102523
+
+Total ceiling hits / total number of matches: 8.5e-05 
+
+Running 10000 tournaments, all with 5 matches each for 24 teams, using the u_plus_lose TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 4.333864517477543
+
+RMSD for top 4 teams (by OPR): 3.563763668418416
+
+Total ceiling hits / total number of matches: 8.333333333333333e-05 
+
+Running 10000 tournaments, all with 5 matches each for 32 teams, using the u_plus_lose TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 5.89819031812642
+
+RMSD for top 4 teams (by OPR): 4.601196341952186
+
+Total ceiling hits / total number of matches: 0.0020025 
+
+Running 10000 tournaments, all with 6 matches each for 32 teams, using the u_plus_lose TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 5.564074340103268
+
+RMSD for top 4 teams (by OPR): 4.198195817578165
+
+Total ceiling hits / total number of matches: 0.00195625 
+
+Running 10000 tournaments, all with 8 matches each for 40 teams, using the u_plus_lose TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.379465098624662
+
+RMSD for top 4 teams (by OPR): 4.290284069477691
+
+Total ceiling hits / total number of matches: 0.0226325 
+
+Running 10000 tournaments, all with 9 matches each for 40 teams, using the u_plus_lose TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.088124371236098
+
+RMSD for top 4 teams (by OPR): 3.980703747147067
+
+Total ceiling hits / total number of matches: 0.022746666666666665 
+
+Running 10000 tournaments, all with 9 matches each for 80 teams, using the u_plus_lose TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 12.716924451674277
+
+RMSD for top 4 teams (by OPR): 6.713333208786926
+
+Total ceiling hits / total number of matches: 0.022564444444444446 
+
+Running 10000 tournaments, all with 5 matches each for 16 teams, using the yours TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 2.7314440161787386
+
+RMSD for top 4 teams (by OPR): 2.402660497392868
+
+Total ceiling hits / total number of matches: 0.0001 
+
+Running 10000 tournaments, all with 5 matches each for 24 teams, using the yours TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 4.290744872453701
+
+RMSD for top 4 teams (by OPR): 3.5025778302101265
+
+Total ceiling hits / total number of matches: 6e-05 
+
+Running 10000 tournaments, all with 5 matches each for 32 teams, using the yours TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 5.846962804775234
+
+RMSD for top 4 teams (by OPR): 4.4928972222000345
+
+Total ceiling hits / total number of matches: 0.001855 
+
+Running 10000 tournaments, all with 6 matches each for 32 teams, using the yours TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 5.520335961672073
+
+RMSD for top 4 teams (by OPR): 4.129974405024614
+
+Total ceiling hits / total number of matches: 0.0018895833333333334 
+
+Running 10000 tournaments, all with 8 matches each for 40 teams, using the yours TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.344694533097696
+
+RMSD for top 4 teams (by OPR): 4.18256507368364
+
+Total ceiling hits / total number of matches: 0.02274 
+
+Running 10000 tournaments, all with 9 matches each for 40 teams, using the yours TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 6.066707469727982
+
+RMSD for top 4 teams (by OPR): 3.884460566416514
+
+Total ceiling hits / total number of matches: 0.02281888888888889 
+
+Running 10000 tournaments, all with 9 matches each for 80 teams, using the yours TBP method
+Score ceiling is ENABLED and is set to 820
+Winner-take-all is ENABLED and is set to +/-0.1
+
+
+
+RMSD for all teams: 12.623423465488454
+
+RMSD for top 4 teams (by OPR): 6.653772354171157
+
+Total ceiling hits / total number of matches: 0.02286888888888889 
+
