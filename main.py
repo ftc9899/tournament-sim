@@ -11,7 +11,7 @@ import random
 options.init()
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], "t:m:n:r:c:w:", ["teams=", "matches=", "tournaments=", "ranking=", "ceiling=", "winner-take-all-percent="])
+	opts, args = getopt.getopt(sys.argv[1:], "t:m:n:r:c:w:", ["teams=", "matches=", "tournaments=", "ranking=", "ceiling=", "winner-take-all-proportion="])
 except getopt.GetoptError as err:
 	print(err)
 	sys.exit(2)
@@ -33,7 +33,7 @@ for o, a in opts:
 		options.ranking_system = a
 	elif o in ('-c', '--ceiling'):
 		options.score_ceiling = int(a)
-	elif o in ('-w', '--winner-take-all-percent'):
+	elif o in ('-w', '--winner-take-all-proportion'):
 		options.wta_proportion = float(a)
 	else:
 		assert False, 'bad option'
@@ -116,8 +116,8 @@ for i in range(0, tournaments):
 	
 	sum_of_ceiling_hits += test_tournament.ceiling_hits
 	
-	if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
-	else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)
+	'''if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
+	else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)'''
 
 print('\n\nRMSD for all teams:', sum_of_RMSDs_all / tournaments)
 print('\nRMSD for top 4 teams (by OPR):', sum_of_RMSDs_top_4 / tournaments)
