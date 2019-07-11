@@ -1,0 +1,36 @@
+Running 10000 tournaments, all with 5 matches each for 16 teams, using the new2019 TBP method
+Score ceiling is DISABLED
+Winner-take-all is DISABLED
+
+
+
+RMSD for all teams: 2.9001900287008495
+
+RMSD for top 4 teams (by OPR): 2.6504947723585843
+Running 10000 tournaments, all with 5 matches each for 24 teams, using the new2019 TBP method
+Score ceiling is DISABLED
+Winner-take-all is DISABLED
+
+
+
+RMSD for all teams: 4.507792041820707
+
+RMSD for top 4 teams (by OPR): 3.7965248741093203
+Running 10000 tournaments, all with 5 matches each for 32 teams, using the new2019 TBP method
+Score ceiling is DISABLED
+Winner-take-all is DISABLED
+
+
+
+RMSD for all teams: 6.12960611703895
+
+RMSD for top 4 teams (by OPR): 5.036674753263417
+Running 10000 tournaments, all with 6 matches each for 32 teams, using the new2019 TBP method
+Score ceiling is DISABLED
+Winner-take-all is DISABLED
+
+
+
+RMSD for all teams: 5.75571000371777
+
+RMSD for top 4 teams (by OPR): 4.5865995827794865
