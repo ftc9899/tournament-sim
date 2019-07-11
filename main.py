@@ -44,7 +44,7 @@ assert tournaments > 0, 'number of tournaments expected but not given (-n or --t
 
 assert teams % 4 == 0, 'number of teams must be divisible by 4'
 
-assert options.ranking_system == "current" or options.ranking_system == "sum" or options.ranking_system == "yours" or options.ranking_system == "opr" or options.ranking_system == "u_plus_lose" or options.ranking_system == "inv_opr" or options.ranking_system == "random", 'provided ranking system not recognized, options are "current", "sum", "yours", "opr", "u_plus_lose", "inv_opr", or "random"'
+assert options.ranking_system == "current" or options.ranking_system == "sum" or options.ranking_system == "yours" or options.ranking_system == "opr" or options.ranking_system == "u_plus_lose" or options.ranking_system == "inv_opr" or options.ranking_system == "random" or options.ranking_system == "new2019", 'provided ranking system not recognized, options are "current", "sum", "yours", "opr", "u_plus_lose", "inv_opr", "random", or "new2019"'
 
 print('Running', tournaments, 'tournaments, all with', matches_per_team, 'matches each for', teams, 'teams, using the', options.ranking_system, 'TBP method')
 
@@ -66,6 +66,9 @@ if (options.ranking_system == "random"):
 	#  but then assign random TBP at the end
 	options.ranking_system = "current"
 	random_TBP = True
+
+if (matches_per_team >= 7):
+	options.subtract_second_least_match = True
 
 teams_to_track = teams # track all teams for fairness
 
@@ -116,8 +119,8 @@ for i in range(0, tournaments):
 	
 	sum_of_ceiling_hits += test_tournament.ceiling_hits
 	
-	'''if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
-	else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)'''
+	#if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
+	#else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)
 
 print('\n\nRMSD for all teams:', sum_of_RMSDs_all / tournaments)
 print('\nRMSD for top 4 teams (by OPR):', sum_of_RMSDs_top_4 / tournaments)

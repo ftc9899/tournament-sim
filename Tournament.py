@@ -191,7 +191,7 @@ class Tournament:
 		print('{:^20}'.format('Team Name') + '|' + '{:^6}'.format('RP') + '|' + '{:^6}'.format('TP') + '|' + '{:^4}'.format('MP') + '|' + '{:^5}'.format('OPR'))
 		print('{:->20}'.format('') + '|' + '{:->6}'.format('') + '|' + '{:->6}'.format('') + '|' + '{:->4}'.format('') + '|' + '{:->5}'.format(''))
 		for t in self.teams:
-			print('{:20}'.format(t.name) + '|' + '{:>6}'.format(t.rp) + '|' + '{:>6}'.format(t.tp) + '|' + '{:>4}'.format(t.matches_played) + '|' + '{:>5}'.format(t.opr))
+			print('{:20}'.format(t.name) + '|' + '{:>6}'.format(t.rp) + '|' + '{:>6}'.format(t.get_tp()) + '|' + '{:>4}'.format(t.matches_played) + '|' + '{:>5}'.format(t.opr))
 		print()
 	
 	def stats(self):
