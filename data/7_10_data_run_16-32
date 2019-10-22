@@ -1,0 +1,4 @@
+python main.py -t 16 -m 5 -n 10000 -r new2019
+python main.py -t 24 -m 5 -n 10000 -r new2019
+python main.py -t 32 -m 5 -n 10000 -r new2019
+python main.py -t 32 -m 6 -n 10000 -r new2019

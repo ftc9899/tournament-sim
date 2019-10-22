@@ -13,6 +13,9 @@ class Team:
 	matches_scheduled = 0
 	opr = -1
 	
+	least_tp = -1
+	second_least_tp = -1
+	
 	def __init__(self, nu, op, na=""):
 		
 		# a list of the partners this team has had (using team numbers)
@@ -39,8 +42,8 @@ class Team:
 	def __lt__(self, other):
 		if self.rp != other.rp:
 			return self.rp > other.rp
-		elif self.tp != other.tp:
-			return self.tp > other.tp
+		elif self.get_tp() != other.get_tp():
+			return self.get_tp() > other.get_tp()
 		else:
 			return self.number < other.number
 	
@@ -48,8 +51,8 @@ class Team:
 	def __gt__(self, other):
 		if self.rp != other.rp:
 			return self.rp < other.rp
-		elif self.tp != other.tp:
-			return self.tp < other.tp
+		elif self.get_tp() != other.get_tp():
+			return self.get_tp() < other.get_tp()
 		else:
 			return self.number > other.number
 	
@@ -58,6 +61,20 @@ class Team:
 	
 	def __ne__(self, other):
 		return not self.__eq__(other)
+	
+	def get_tp(self):
+		if (options.ranking_system != "new2019"):
+			return self.tp
+		
+		result = self.tp
+		
+		if (self.least_tp >= 0):
+			result -= self.least_tp
+		
+		if (options.subtract_second_least_match and self.second_least_tp >= 0):
+			result -= self.second_least_tp
+		
+		return result
 	
 	def get_points(self):
 		#return self.opr
@@ -69,10 +86,8 @@ class Team:
 		print('Team ' + self.name + ' ( ' + '{:0>5}'.format(self.number) + ' )')
 		print('OPR: ' + str(self.opr))
 		print('RP:  ' + str(self.rp))
-		print('TP:  ' + str(self.tp) + '\n')
+		print('TP:  ' + str(self.get_tp()) + '\n')
 	
-	# reflect current rp/tp system,
-	#  modify these methods to test new systems
 	def win(self, w_points, l_points):
 		self.rp += 2
 		
@@ -89,6 +104,13 @@ class Team:
 			self.tp += w_points + l_points
 		elif (options.ranking_system == "inv_opr"):
 			self.tp -= self.opr
+		elif (options.ranking_system == "new2019"):
+			self.tp += l_points
+			
+			if (self.least_tp == -1 or l_points < self.least_tp):
+				self.least_tp = l_points
+			elif (self.second_least_tp == -1 or l_points < self.second_least_tp):
+				self.second_least_tp = l_points
 	
 	def lose(self, w_points, l_points):
 		if (options.ranking_system == "current"):
@@ -103,6 +125,13 @@ class Team:
 			self.tp += l_points + l_points
 		elif (options.ranking_system == "inv_opr"):
 			self.tp -= self.opr
+		elif (options.ranking_system == "new2019"):
+			self.tp += l_points
+			
+			if (self.least_tp == -1 or l_points < self.least_tp):
+				self.least_tp = l_points
+			elif (self.second_least_tp == -1 or l_points < self.second_least_tp):
+				self.second_least_tp = l_points
 	
 	def tie(self, w_points, l_points):
 		self.rp += 1
@@ -119,10 +148,19 @@ class Team:
 			self.tp += w_points + l_points
 		elif (options.ranking_system == "inv_opr"):
 			self.tp -= self.opr
+		elif (options.ranking_system == "new2019"):
+			self.tp += l_points
+			
+			if (self.least_tp == -1 or l_points < self.least_tp):
+				self.least_tp = l_points
+			elif (self.second_least_tp == -1 or l_points < self.second_least_tp):
+				self.second_least_tp = l_points
 	
 	def reset(self):
 		self.rp = 0
 		self.tp = 0
+		self.least_tp = -1
+		self.second_least_tp = -1
 		self.matches_played = 0
 		self.matches_scheduled = 0
 		
