@@ -1,6 +1,9 @@
 def init():
+	global ranking_systems
+	ranking_systems = "current"
+	
 	global ranking_system
-	ranking_system = "current"
+	ranking_system = "none"
 	
 	global score_ceiling
 	score_ceiling = -1

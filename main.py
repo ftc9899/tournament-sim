@@ -11,7 +11,7 @@ import random
 options.init()
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], "t:m:n:r:c:w:", ["teams=", "matches=", "tournaments=", "ranking=", "ceiling=", "winner-take-all-proportion="])
+	opts, args = getopt.getopt(sys.argv[1:], "t:m:n:r:c:w:", ["teams=", "matches=", "tournaments=", "rankings=", "ceiling=", "winner-take-all-proportion="])
 except getopt.GetoptError as err:
 	print(err)
 	sys.exit(2)
@@ -20,8 +20,6 @@ teams = 0
 matches_per_team = 0
 tournaments = 0
 
-random_TBP = False
-
 for o, a in opts:
 	if o in ('-t', '--teams'):
 		teams = int(a)
@@ -29,8 +27,8 @@ for o, a in opts:
 		matches_per_team = int(a)
 	elif o in ('-n', '--tournaments'):
 		tournaments = int(a)
-	elif o in ('-r', '--ranking'):
-		options.ranking_system = a
+	elif o in ('-r', '--rankings'):
+		options.ranking_systems = a
 	elif o in ('-c', '--ceiling'):
 		options.score_ceiling = int(a)
 	elif o in ('-w', '--winner-take-all-proportion'):
@@ -44,9 +42,9 @@ assert tournaments > 0, 'number of tournaments expected but not given (-n or --t
 
 assert teams % 4 == 0, 'number of teams must be divisible by 4'
 
-assert options.ranking_system == "current" or options.ranking_system == "sum" or options.ranking_system == "yours" or options.ranking_system == "opr" or options.ranking_system == "u_plus_lose" or options.ranking_system == "inv_opr" or options.ranking_system == "random" or options.ranking_system == "new2019", 'provided ranking system not recognized, options are "current", "sum", "yours", "opr", "u_plus_lose", "inv_opr", "random", or "new2019"'
+#assert options.ranking_system == "current" or options.ranking_system == "sum" or options.ranking_system == "yours" or options.ranking_system == "opr" or options.ranking_system == "u_plus_lose" or options.ranking_system == "inv_opr" or options.ranking_system == "random" or options.ranking_system == "new2019", 'provided ranking system not recognized, options are "current", "sum", "yours", "opr", "u_plus_lose", "inv_opr", "random", or "new2019"'
 
-print('Running', tournaments, 'tournaments, all with', matches_per_team, 'matches each for', teams, 'teams, using the', options.ranking_system, 'TBP method')
+print('Running', tournaments, 'tournaments, all with', matches_per_team, 'matches each for', teams, 'teams, using the', options.ranking_systems, 'TBP method(s)')
 
 if (options.score_ceiling != -1):
 	print('Score ceiling is ENABLED and is set to', options.score_ceiling)
@@ -60,12 +58,6 @@ if (options.wta_proportion is not None):
 	print()
 else:
 	print('Winner-take-all is DISABLED\n')
-
-if (options.ranking_system == "random"):
-	# run tournament with current system to speed through the cascading if/elif in Team.py,
-	#  but then assign random TBP at the end
-	options.ranking_system = "current"
-	random_TBP = True
 
 if (matches_per_team >= 7):
 	options.subtract_second_least_match = True
@@ -93,35 +85,53 @@ for i in range(0, tournaments):
 	
 	while not test_tournament.create_match_schedule(): continue
 	
-	test_tournament.run_tournament()
+	for ranking_system in options.ranking_systems.split(','):
+		
+		options.ranking_system = ranking_system
+		
+		random_TBP = False
+		
+		test_tournament.soft_reset()
+		
+		if not (ranking_system == "current" or ranking_system == "sum" or ranking_system == "yours" or ranking_system == "opr" or ranking_system == "u_plus_lose" or ranking_system == "inv_opr" or ranking_system == "random" or ranking_system == "new2019"):
+			print('provided ranking system "' + str(ranking_system) + '" not recognized, options are "current", "sum", "yours", "opr", "u_plus_lose", "inv_opr", "random", or "new2019".\nSkipping to next ranking system...')
+			continue
+		
+		if (ranking_system == "random"):
+			# run tournament with current system to speed through the cascading if/elif in Team.py,
+			#  but then assign random TBP at the end
+			ranking_system = "current"
+			random_TBP = True
 	
-	# if needed, assign random TBP
-	if (random_TBP):
-		for t in test_tournament.teams:
-			t.tp = int(random.random() * 1000)
+		test_tournament.run_tournament()
 	
-	test_tournament.rank()
-	
-	sum_of_squared_residuals_all = 0
-	sum_of_squared_residuals_top_4 = 0
-	
-	for r in range(1, teams_to_track + 1):
-		for t in range(len(test_tournament.teams)):
-			if (test_tournament.teams[t].number == r):
-				sum_of_squared_residuals_all += math.pow((t + 1) - r, 2)
-				# track the first four teams in a separate sum
-				if (r < 5):
-					sum_of_squared_residuals_top_4 += math.pow((t + 1) - r, 2)
-				break
-	
-	sum_of_RMSDs_all += math.sqrt(sum_of_squared_residuals_all/(teams_to_track - 1))
-	sum_of_RMSDs_top_4 += math.sqrt(sum_of_squared_residuals_top_4/(4 - 1)) # use '4 - 1' instead of 3 to mirror line above
-	
-	sum_of_ceiling_hits += test_tournament.ceiling_hits
-	
-	#if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
-	#else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)
-
-print('\n\nRMSD for all teams:', sum_of_RMSDs_all / tournaments)
-print('\nRMSD for top 4 teams (by OPR):', sum_of_RMSDs_top_4 / tournaments)
-if(options.score_ceiling != -1): print('\nTotal ceiling hits / total number of matches:', sum_of_ceiling_hits / (tournaments * test_tournament.number_of_matches), '\n')
+		# if needed, assign random TBP
+		if (random_TBP):
+			for t in test_tournament.teams:
+				t.tp = int(random.random() * 1000)
+		
+		test_tournament.rank()
+		
+		sum_of_squared_residuals_all = 0
+		sum_of_squared_residuals_top_4 = 0
+		
+		for r in range(1, teams_to_track + 1):
+			for t in range(len(test_tournament.teams)):
+				if (test_tournament.teams[t].number == r):
+					sum_of_squared_residuals_all += math.pow((t + 1) - r, 2)
+					# track the first four teams in a separate sum
+					if (r < 5):
+						sum_of_squared_residuals_top_4 += math.pow((t + 1) - r, 2)
+					break
+		
+		sum_of_RMSDs_all += math.sqrt(sum_of_squared_residuals_all/(teams_to_track - 1))
+		sum_of_RMSDs_top_4 += math.sqrt(sum_of_squared_residuals_top_4/(4 - 1)) # use '4 - 1' instead of 3 to mirror line above
+		
+		sum_of_ceiling_hits += test_tournament.ceiling_hits
+		
+		if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
+		else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)
+		
+		print('\n\nRMSD for all teams:', sum_of_RMSDs_all / tournaments)
+		print('\nRMSD for top 4 teams (by OPR):', sum_of_RMSDs_top_4 / tournaments, '\n')
+		if(options.score_ceiling != -1): print('Total ceiling hits / total number of matches:', sum_of_ceiling_hits / (tournaments * test_tournament.number_of_matches), '\n')

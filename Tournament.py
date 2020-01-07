@@ -202,3 +202,7 @@ class Tournament:
 		self.matches = []
 		for t in self.teams:
 			t.reset()
+	
+	def soft_reset(self):
+		for t in self.teams:
+			t.reset()
