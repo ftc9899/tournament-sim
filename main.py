@@ -67,13 +67,13 @@ teams_to_track = teams # track all teams for fairness
 # keep track of sum of RMSDs for each tournament,
 #  then divide by the number of tournaments at the end
 #  to report the average RMSD
-sum_of_RMSDs_all = 0
+sum_of_RMSDs_all = {}
 
 # keep a seperate running sum of RMSDs for the
 #  top 4 teams (by input rank) for each tournament
-sum_of_RMSDs_top_4 = 0
+sum_of_RMSDs_top_4 = {}
 
-sum_of_ceiling_hits = 0
+sum_of_ceiling_hits = {}
 
 # declare eventual Tournament object outside for loop so the last tournament's values can be accessed
 test_tournament = -1
@@ -88,6 +88,9 @@ for i in range(0, tournaments):
 	for ranking_system in options.ranking_systems.split(','):
 		
 		options.ranking_system = ranking_system
+		sum_of_RMSDs_all[options.ranking_system] = 0
+		sum_of_RMSDs_top_4[options.ranking_system] = 0
+		sum_of_ceiling_hits[options.ranking_system] = 0
 		
 		random_TBP = False
 		
@@ -124,14 +127,22 @@ for i in range(0, tournaments):
 						sum_of_squared_residuals_top_4 += math.pow((t + 1) - r, 2)
 					break
 		
-		sum_of_RMSDs_all += math.sqrt(sum_of_squared_residuals_all/(teams_to_track - 1))
-		sum_of_RMSDs_top_4 += math.sqrt(sum_of_squared_residuals_top_4/(4 - 1)) # use '4 - 1' instead of 3 to mirror line above
+		sum_of_RMSDs_all[options.ranking_system] += math.sqrt(sum_of_squared_residuals_all/(teams_to_track - 1))
+		sum_of_RMSDs_top_4[options.ranking_system] += math.sqrt(sum_of_squared_residuals_top_4/(4 - 1)) # use '4 - 1' instead of 3 to mirror line above
 		
-		sum_of_ceiling_hits += test_tournament.ceiling_hits
+		sum_of_ceiling_hits[options.ranking_system] += test_tournament.ceiling_hits
 		
-		if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
-		else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)
-		
-		print('\n\nRMSD for all teams:', sum_of_RMSDs_all / tournaments)
-		print('\nRMSD for top 4 teams (by OPR):', sum_of_RMSDs_top_4 / tournaments, '\n')
-		if(options.score_ceiling != -1): print('Total ceiling hits / total number of matches:', sum_of_ceiling_hits / (tournaments * test_tournament.number_of_matches), '\n')
+	if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
+	else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)
+
+print()
+
+for system in options.ranking_systems.split(','):
+    if not(system in sum_of_RMSDs_all):
+        print ('\n\nSystem "' + system + '" not found, skipping...')
+        continue
+    print('\n\nResults for', system, 'ranking system:')
+    
+    print('\nRMSD for all teams:', sum_of_RMSDs_all.get(system) / tournaments)
+    print('RMSD for top 4 teams (by OPR):', sum_of_RMSDs_top_4.get(system) / tournaments)
+    if(options.score_ceiling != -1): print('Total ceiling hits / total number of matches:', sum_of_ceiling_hits.get(system) / (tournaments * test_tournament.number_of_matches))

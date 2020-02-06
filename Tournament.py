@@ -23,7 +23,7 @@ class Tournament:
 		self.rank()
 		self.matches_per_team = ma
 		#TODO: check that with the number of teams given, the requested amount of
-		     # matches per team can be played without conflicts'''
+		   # matches per team can be played without conflicts'''
 		
 		self.number_of_matches = len(self.teams) * self.matches_per_team // 4
 		
@@ -199,10 +199,12 @@ class Tournament:
 			m.stats()
 	
 	def reset(self):
+		self.ceiling_hits = 0
 		self.matches = []
 		for t in self.teams:
 			t.reset()
 	
 	def soft_reset(self):
+		self.ceiling_hits = 0
 		for t in self.teams:
 			t.reset()
