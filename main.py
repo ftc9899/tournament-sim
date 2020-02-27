@@ -75,6 +75,12 @@ sum_of_RMSDs_top_4 = {}
 
 sum_of_ceiling_hits = {}
 
+# initialize lists to track the sum of RMSDs outside the main nested loop
+for ranking_system in options.ranking_systems.split(','):
+	sum_of_RMSDs_all[ranking_system] = 0
+	sum_of_RMSDs_top_4[ranking_system] = 0
+	sum_of_ceiling_hits[ranking_system] = 0
+
 # declare eventual Tournament object outside for loop so the last tournament's values can be accessed
 test_tournament = -1
 
@@ -88,9 +94,6 @@ for i in range(0, tournaments):
 	for ranking_system in options.ranking_systems.split(','):
 		
 		options.ranking_system = ranking_system
-		sum_of_RMSDs_all[options.ranking_system] = 0
-		sum_of_RMSDs_top_4[options.ranking_system] = 0
-		sum_of_ceiling_hits[options.ranking_system] = 0
 		
 		random_TBP = False
 		
@@ -122,7 +125,7 @@ for i in range(0, tournaments):
 			for t in range(len(test_tournament.teams)):
 				if (test_tournament.teams[t].number == r):
 					sum_of_squared_residuals_all += math.pow((t + 1) - r, 2)
-					# track the first four teams in a separate sum
+					# track the first four teams in an additional separate sum
 					if (r < 5):
 						sum_of_squared_residuals_top_4 += math.pow((t + 1) - r, 2)
 					break
@@ -141,7 +144,7 @@ for system in options.ranking_systems.split(','):
     if not(system in sum_of_RMSDs_all):
         print ('\n\nSystem "' + system + '" not found, skipping...')
         continue
-    print('\n\nResults for', system, 'ranking system:')
+    print("\n\nResults for '" + system + "' ranking system:")
     
     print('\nRMSD for all teams:', sum_of_RMSDs_all.get(system) / tournaments)
     print('RMSD for top 4 teams (by OPR):', sum_of_RMSDs_top_4.get(system) / tournaments)
