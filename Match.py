@@ -83,7 +83,7 @@ class Match:
 		
 		else:
 			self.winner = "tie"
-			self.formatted_winner = "tie"
+			self.formatted_winner = "\x1b[42;38mtie\x1b[0m"
 			
 			self.win1 = self.red1.number; self.win2 = self.red2.number
 			self.lose1 = self.blue1.number; self.lose2 = self.blue2.number
@@ -129,3 +129,6 @@ class Match:
 			self.red2.lose(self.win_score, self.lose_score)
 			self.blue1.win(self.win_score, self.lose_score)
 			self.blue2.win(self.win_score, self.lose_score)
+	
+	def reassign_tbp(self):
+		self._give_points()

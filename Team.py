@@ -172,3 +172,9 @@ class Team:
 		
 		# don't allow a team to play against themselves
 		self.past_opponents.append(self.number)
+	
+	def reset_tbp(self):
+		self.tp = 0
+		self.rp = 0
+		self.least_tp = -1
+		self.second_least_tp = -1
