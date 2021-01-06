@@ -135,10 +135,11 @@ for i in range(0, tournaments):
 		
 		sum_of_ceiling_hits[options.ranking_system] += test_tournament.ceiling_hits
 		
-	if i == 0: print('Tournament', 1, 'done', end = '', flush = True)
-	else: print('\rTournament', i + 1, 'done   ', end = '', flush = True)
+	if i == 0: print('Tournament', 1, 'done', end = '', flush = True, file=sys.stderr)
+	else: print('\rTournament', i + 1, 'done   ', end = '', flush = True, file=sys.stderr)
 
 print()
+print(file=sys.stderr)
 
 for system in options.ranking_systems.split(','):
     if not(system in sum_of_RMSDs_all):
