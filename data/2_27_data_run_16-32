@@ -1,0 +1,8 @@
+python main.py -t 16 -m 5 -r random,current,sum,u_plus_lose,yours,opr -n 10000
+echo
+python main.py -t 24 -m 5 -r random,current,sum,u_plus_lose,yours,opr -n 10000
+echo
+python main.py -t 32 -m 5 -r random,current,sum,u_plus_lose,yours,opr -n 10000
+echo
+python main.py -t 32 -m 6 -r random,current,sum,u_plus_lose,yours,opr -n 10000
+

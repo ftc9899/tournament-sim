@@ -1,0 +1,1 @@
+python main.py -t 40 -m 8 -r random,current,sum,u_plus_lose,yours,opr -n 10000
