@@ -91,13 +91,13 @@ for i in range(0, tournaments):
 	
 	while not test_tournament.create_match_schedule(): continue
 	
+	test_tournament.run_tournament()
+	
 	for ranking_system in options.ranking_systems.split(','):
 		
 		options.ranking_system = ranking_system
 		
 		random_TBP = False
-		
-		test_tournament.soft_reset()
 		
 		if not (ranking_system == "current" or ranking_system == "sum" or ranking_system == "yours" or ranking_system == "opr" or ranking_system == "u_plus_lose" or ranking_system == "inv_opr" or ranking_system == "random" or ranking_system == "new2019"):
 			print('provided ranking system "' + str(ranking_system) + '" not recognized, options are "current", "sum", "yours", "opr", "u_plus_lose", "inv_opr", "random", or "new2019".\nSkipping to next ranking system...')
@@ -108,8 +108,8 @@ for i in range(0, tournaments):
 			#  but then assign random TBP at the end
 			ranking_system = "current"
 			random_TBP = True
-	
-		test_tournament.run_tournament()
+		
+		test_tournament.reassign_tbp()
 	
 		# if needed, assign random TBP
 		if (random_TBP):
