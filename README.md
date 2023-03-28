@@ -91,6 +91,6 @@ To simulate the effects of winner-take-all as a game feature, the user can speci
 - `-t` or `--teams` followed by the number of teams
 - `-m` or `--matches` followed by the number of matches per team
 - `-n` or `--tournaments` followed by the number of tournaments to run
-- `-r` or `--ranking` followed by the TBP method to use ('current', 'sum', 'u_plus_lose', 'yours', or 'opr')
+- `-r` or `--ranking` followed by the TBP method to use ('current', 'sum', 'u_plus_lose', 'yours', 'new2019', 'random', 'opr', or 'inv_opr')
 - `-c` or `--ceiling` followed by the score ceiling
 - `-w` or `--winner-take-all-proportion` followed by the proportion of an alliance's score to be affected by a winner-take-all feature
