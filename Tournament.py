@@ -11,18 +11,18 @@ class Tournament:
 	
 	ceiling_hits = 0
 	
-	def __init__(self, te, ma):
+	def __init__(self, teams, matches_per_team):
 		# set up the array of teams, which will also keep track of rankings
 		self.teams = []
-		if isinstance(te, int):
-			self.generate_n_teams(te)
+		if isinstance(teams, int):
+			self.generate_n_teams(teams)
 		else:
-			self.teams = te
+			self.teams = teams
 		
 		self.rank()
-		self.matches_per_team = ma
+		self.matches_per_team = matches_per_team
 		#TODO: check that with the number of teams given, the requested amount of
-		     # matches per team can be played without conflicts'''
+		#       matches per team can be played without conflicts'''
 		
 		self.number_of_matches = len(self.teams) * self.matches_per_team // 4
 		

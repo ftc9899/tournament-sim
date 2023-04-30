@@ -19,7 +19,7 @@ class Match:
 	win_score = -1
 	lose_score = -1
 	
-	def __init__(self, red, blue, nu=-1):
+	def __init__(self, red, blue, number=-1):
 		self.red_alliance = red
 		self.red1 = self.red_alliance[0]
 		self.red2 = self.red_alliance[1]
@@ -28,7 +28,7 @@ class Match:
 		self.blue1 = self.blue_alliance[0]
 		self.blue2 = self.blue_alliance[1]
 		
-		self.match_number = nu
+		self.match_number = number
 	
 	def run_match(self):
 		hit_ceiling = False
