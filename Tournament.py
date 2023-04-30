@@ -1,5 +1,4 @@
 import random
-import time
 import numpy as np
 
 from Team import Team
@@ -164,8 +163,11 @@ class Tournament:
 		else:
 			oprs = np.random.normal(100, 55, n)
 		
+		# set up for loop below
 		oprs.sort()
 		o = 0
+
+		# assign highest opr to lowest team number, etc.
 		for t in reversed(self.teams):
 			temp = int(oprs[o])
 			
@@ -198,7 +200,9 @@ class Tournament:
 		for m in self.matches:
 			m.stats()
 	
+	# mostly used by create_match_schedule to restart schedule generation if it gets stuck
 	def reset(self):
+		self.ceiling_hits = 0
 		self.matches = []
 		for t in self.teams:
 			t.reset()
