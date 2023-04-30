@@ -16,7 +16,7 @@ class Team:
 	least_tp = -1
 	second_least_tp = -1
 	
-	def __init__(self, nu, op, na=""):
+	def __init__(self, number, opr, name=""):
 		
 		# a list of the partners this team has had (using team numbers)
 		self.past_partners = []
@@ -24,19 +24,19 @@ class Team:
 		# a list of the opponents this team has had (using team numbers)
 		self.past_opponents = []
 		
-		self.number = nu
-		self.opr = op
+		self.number = number
+		self.opr = opr
 		
 		# don't allow a team to partner with themselves
-		self.past_partners.append(nu)
+		self.past_partners.append(number)
 		
 		# don't allow a team to play against themselves
-		self.past_opponents.append(nu)
+		self.past_opponents.append(number)
 		
-		if na == "":
-			self.name = str(nu)
+		if name == "":
+			self.name = str(number)
 		else:
-			self.name = na
+			self.name = name
 	
 	# if a team is less than another team, they rank above the other team
 	def __lt__(self, other):
@@ -91,7 +91,7 @@ class Team:
 	def win(self, w_points, l_points):
 		self.rp += 2
 		
-		# TODO: Add eval (to call appropriate TBP method as a function)?
+		# TODO IDEA: Add eval (to call appropriate TBP method as a function)?
 		if (options.ranking_system == "current"):
 			self.tp += l_points
 		elif (options.ranking_system == "sum"):
