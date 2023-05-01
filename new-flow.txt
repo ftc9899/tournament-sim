@@ -1,0 +1,61 @@
+opts, args = getopt.getopt(sys.argv[1:] ...
+
+initialize variables that get their values from options
+ teams = 0
+ matches_per_team = 0
+ tournaments = 0
+
+loop through options
+
+check teams, matches_per_team, and tournaments variables
+
+check that teams variable is evenly divisible by 4
+
+print('Running', tournaments, 'tournaments, all with', matches_per_team, 'matches each for', teams, 'teams, using the', options.ranking_systems, 'TBP method(s)')
+
+handle score ceiling input
+
+handle winner-take-all proportion input
+
+initialize more variables
+ options.subtract_second_least_match
+ teams_to_track = teams
+ sum_of_RMSDs_all = 0
+ sum_of_RMSDs_top_4 = 0
+ sum_of_ceiling_hits = 0
+ test_tournament = -1 (Tournament object)
+
+for i in range(0, tournaments): (run through all the tournaments)
+    initialize the tournament object
+    create match schedule
+    loop through the ranking systems (by design using the same Tournament object and therefore the same match schedule for each ranking system)
+        options.ranking_system = the current ranking system
+        
+        initialize random_TBP variable to be False
+        
+        soft_reset the Tournament object (MAKE SURE THIS INCLUDES <tournament>.ceiling_hits)
+        
+        check ranking system
+        if the ranking system is 'random', do the extra setup
+        
+        run the tournament
+        
+        assign random tbp if needed
+        
+        test_tournament.rank()
+        
+        initialize more variables for stats
+         sum_of_squared_residuals_all = 0
+         sum_of_square_residuals_top_4 = 0
+        
+        loop through test_tournament.teams
+            add current team's squared residual to sum_of_squared_residuals_all
+            if the team's rank is < 5:
+                add current team's squared residual to sum_of_squared_residuals_top 4
+        
+        sum_of_RMSDs_all += math.sqrt(sum_of_squared_residuals_all/(teams_to_track - 1))
+		sum_of_RMSDs_top_4 += math.sqrt(sum_of_squared_residuals_top_4/(4 - 1)) # use '4 - 1' instead of 3 to mirror line above
+		
+		sum_of_ceiling_hits += test_tournament.ceiling_hits
+		
+		print out results (make sure to do this in the right loop, whether it's the inner or outer one I'm not sure yet)

@@ -1,0 +1,167 @@
+Running 10000 tournaments, all with 5 matches each for 16 teams, using the random,current,sum,u_plus_lose,yours,opr TBP method(s)
+Score ceiling is DISABLED
+Winner-take-all is DISABLED
+
+
+
+
+Results for 'random' ranking system:
+
+RMSD for all teams: 3.4249411984843574
+RMSD for top 4 teams (by OPR): 3.240705052720656
+
+
+Results for 'current' ranking system:
+
+RMSD for all teams: 2.91540590096611
+RMSD for top 4 teams (by OPR): 2.7001752164740074
+
+
+Results for 'sum' ranking system:
+
+RMSD for all teams: 2.8265586365420208
+RMSD for top 4 teams (by OPR): 2.4846369976189933
+
+
+Results for 'u_plus_lose' ranking system:
+
+RMSD for all teams: 2.7639369078149603
+RMSD for top 4 teams (by OPR): 2.4293789920019986
+
+
+Results for 'yours' ranking system:
+
+RMSD for all teams: 2.7308496388153527
+RMSD for top 4 teams (by OPR): 2.3903605589616026
+
+
+Results for 'opr' ranking system:
+
+RMSD for all teams: 2.4489226406999363
+RMSD for top 4 teams (by OPR): 2.043278248340441
+
+Running 10000 tournaments, all with 5 matches each for 24 teams, using the random,current,sum,u_plus_lose,yours,opr TBP method(s)
+Score ceiling is DISABLED
+Winner-take-all is DISABLED
+
+
+
+
+Results for 'random' ranking system:
+
+RMSD for all teams: 5.305081376589906
+RMSD for top 4 teams (by OPR): 4.803694959476594
+
+
+Results for 'current' ranking system:
+
+RMSD for all teams: 4.514249941571204
+RMSD for top 4 teams (by OPR): 3.923807306472912
+
+
+Results for 'sum' ranking system:
+
+RMSD for all teams: 4.414001541673822
+RMSD for top 4 teams (by OPR): 3.6090964863055115
+
+
+Results for 'u_plus_lose' ranking system:
+
+RMSD for all teams: 4.332273980159596
+RMSD for top 4 teams (by OPR): 3.5665494574355567
+
+
+Results for 'yours' ranking system:
+
+RMSD for all teams: 4.2876204531382935
+RMSD for top 4 teams (by OPR): 3.4664704261380814
+
+
+Results for 'opr' ranking system:
+
+RMSD for all teams: 3.935293492915649
+RMSD for top 4 teams (by OPR): 3.0679541860420443
+
+Running 10000 tournaments, all with 5 matches each for 32 teams, using the random,current,sum,u_plus_lose,yours,opr TBP method(s)
+Score ceiling is DISABLED
+Winner-take-all is DISABLED
+
+
+
+
+Results for 'random' ranking system:
+
+RMSD for all teams: 7.21589982184347
+RMSD for top 4 teams (by OPR): 6.396747487467917
+
+
+Results for 'current' ranking system:
+
+RMSD for all teams: 6.154066446439584
+RMSD for top 4 teams (by OPR): 5.152141578616106
+
+
+Results for 'sum' ranking system:
+
+RMSD for all teams: 6.009824396153262
+RMSD for top 4 teams (by OPR): 4.726443391936608
+
+
+Results for 'u_plus_lose' ranking system:
+
+RMSD for all teams: 5.914752022547426
+RMSD for top 4 teams (by OPR): 4.638699345015421
+
+
+Results for 'yours' ranking system:
+
+RMSD for all teams: 5.856630060719547
+RMSD for top 4 teams (by OPR): 4.517863476466725
+
+
+Results for 'opr' ranking system:
+
+RMSD for all teams: 5.418998531770639
+RMSD for top 4 teams (by OPR): 4.033606646008557
+
+Running 10000 tournaments, all with 6 matches each for 32 teams, using the random,current,sum,u_plus_lose,yours,opr TBP method(s)
+Score ceiling is DISABLED
+Winner-take-all is DISABLED
+
+
+
+
+Results for 'random' ranking system:
+
+RMSD for all teams: 6.730577294243354
+RMSD for top 4 teams (by OPR): 5.704949151455337
+
+
+Results for 'current' ranking system:
+
+RMSD for all teams: 5.771137504184796
+RMSD for top 4 teams (by OPR): 4.690283002184421
+
+
+Results for 'sum' ranking system:
+
+RMSD for all teams: 5.653675968474453
+RMSD for top 4 teams (by OPR): 4.27775148784412
+
+
+Results for 'u_plus_lose' ranking system:
+
+RMSD for all teams: 5.571450921885924
+RMSD for top 4 teams (by OPR): 4.239128229973619
+
+
+Results for 'yours' ranking system:
+
+RMSD for all teams: 5.522662652425028
+RMSD for top 4 teams (by OPR): 4.167277345767896
+
+
+Results for 'opr' ranking system:
+
+RMSD for all teams: 5.154712912579325
+RMSD for top 4 teams (by OPR): 3.727916597832491

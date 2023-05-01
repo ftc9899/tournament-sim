@@ -206,3 +206,9 @@ class Tournament:
 		self.matches = []
 		for t in self.teams:
 			t.reset()
+	
+	def reassign_tbp(self):
+		for t in self.teams:
+			t.reset_tbp()
+		for m in self.matches:
+		    m.reassign_tbp()
