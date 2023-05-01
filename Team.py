@@ -1,6 +1,28 @@
+import options
+
 import random
 
-import options
+TBP_METHOD_CALCULATIONS_FOR_WINNING_TEAM = {
+	'current'     : 'l_points',
+	'sum'         : ' w_points + l_points',
+	'yours'       : 'w_points',
+	'opr'         : 'self.opr',
+	'u_plus_lose' : 'w_points + l_points',
+	'inv_opr'     : '-self.opr',
+	'random'      : '', # random tbp will be assigned later
+	'new2019'     : 'l_points'
+}
+
+TBP_METHOD_CALCULATIONS_FOR_LOSING_TEAM = {
+	'current'     : 'l_points',
+	'sum'         : 'w_points + l_points',
+	'yours'       : 'l_points',
+	'opr'         : 'self.opr',
+	'u_plus_lose' : 'l_points * 2',
+	'inv_opr'     : '-self.opr',
+	'random'      : '', # random tbp will be assigned later
+	'new2019'     : 'l_points'
+}
 
 class Team:
 	
@@ -63,7 +85,7 @@ class Team:
 		return not self.__eq__(other)
 	
 	def get_tp(self):
-		if (options.ranking_system != "new2019"):
+		if (options.current_ranking_system != "new2019"):
 			return self.tp
 		
 		result = self.tp
@@ -88,73 +110,16 @@ class Team:
 		print('RP:  ' + str(self.rp))
 		print('TP:  ' + str(self.get_tp()) + '\n')
 	
-	def win(self, w_points, l_points):
+	def win(self, w_points, l_points, tbp_method):
 		self.rp += 2
-		
-		# TODO IDEA: Add eval (to call appropriate TBP method as a function)?
-		if (options.ranking_system == "current"):
-			self.tp += l_points
-		elif (options.ranking_system == "sum"):
-			self.tp += w_points + l_points
-		elif (options.ranking_system == "yours"):
-			self.tp += w_points
-		elif (options.ranking_system == "opr"):
-			self.tp += self.opr
-		elif (options.ranking_system == "u_plus_lose"):
-			self.tp += w_points + l_points
-		elif (options.ranking_system == "inv_opr"):
-			self.tp -= self.opr
-		elif (options.ranking_system == "new2019"):
-			self.tp += l_points
-			
-			if (self.least_tp == -1 or l_points < self.least_tp):
-				self.least_tp = l_points
-			elif (self.second_least_tp == -1 or l_points < self.second_least_tp):
-				self.second_least_tp = l_points
+		self.tp += eval(TBP_METHOD_CALCULATIONS_FOR_WINNING_TEAM[tbp_method])
 	
-	def lose(self, w_points, l_points):
-		if (options.ranking_system == "current"):
-			self.tp += l_points
-		elif (options.ranking_system == "sum"):
-			self.tp += w_points + l_points
-		elif (options.ranking_system == "yours"):
-			self.tp += l_points
-		elif (options.ranking_system == "opr"):
-			self.tp += self.opr
-		elif (options.ranking_system == "u_plus_lose"):
-			self.tp += l_points + l_points
-		elif (options.ranking_system == "inv_opr"):
-			self.tp -= self.opr
-		elif (options.ranking_system == "new2019"):
-			self.tp += l_points
-			
-			if (self.least_tp == -1 or l_points < self.least_tp):
-				self.least_tp = l_points
-			elif (self.second_least_tp == -1 or l_points < self.second_least_tp):
-				self.second_least_tp = l_points
+	def lose(self, w_points, l_points, tbp_method):
+		self.tp += eval(TBP_METHOD_CALCULATIONS_FOR_LOSING_TEAM[tbp_method])
 	
-	def tie(self, w_points, l_points):
+	def tie(self, w_points, l_points, tbp_method):
 		self.rp += 1
-		
-		if (options.ranking_system == "current"):
-			self.tp += l_points
-		elif (options.ranking_system == "sum"):
-			self.tp += w_points + l_points
-		elif (options.ranking_system == "yours"):
-			self.tp += w_points
-		elif (options.ranking_system == "opr"):
-			self.tp += self.opr
-		elif (options.ranking_system == "u_plus_lose"):
-			self.tp += w_points + l_points
-		elif (options.ranking_system == "inv_opr"):
-			self.tp -= self.opr
-		elif (options.ranking_system == "new2019"):
-			self.tp += l_points
-			
-			if (self.least_tp == -1 or l_points < self.least_tp):
-				self.least_tp = l_points
-			elif (self.second_least_tp == -1 or l_points < self.second_least_tp):
-				self.second_least_tp = l_points
+		self.tp += eval(TBP_METHOD_CALCULATIONS_FOR_WINNING_TEAM[tbp_method])
 	
 	def reset(self):
 		self.rp = 0

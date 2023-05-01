@@ -3,11 +3,10 @@ from Tournament import Tournament
 import options
 
 import getopt, sys
-
 import math
-import random
-
 import datetime
+
+SUPPORTED_RANKING_SYSTEMS = ['current', 'sum', 'yours', 'opr', 'u_plus_lose', 'inv_opr', 'random', 'new2019']
 
 def handle_args():
 	try:
@@ -24,7 +23,7 @@ def handle_args():
 		elif o in ('-n', '--tournaments'):
 			tournaments = int(a)
 		elif o in ('-r', '--rankings'):
-			options.ranking_systems = a
+			options.ranking_systems = a.split(',')
 		elif o in ('-c', '--ceiling'):
 			options.score_ceiling = int(a)
 		elif o in ('-w', '--winner-take-all-proportion'):
@@ -38,7 +37,10 @@ def handle_args():
 
 	assert teams % 4 == 0, 'number of teams must be divisible by 4'
 
-	#assert options.ranking_system == "current" or options.ranking_system == "sum" or options.ranking_system == "yours" or options.ranking_system == "opr" or options.ranking_system == "u_plus_lose" or options.ranking_system == "inv_opr" or options.ranking_system == "random" or options.ranking_system == "new2019", 'provided ranking system not recognized, options are "current", "sum", "yours", "opr", "u_plus_lose", "inv_opr", "random", or "new2019"'
+	for ranking_system in options.ranking_systems:
+		if ranking_system not in SUPPORTED_RANKING_SYSTEMS:
+			print('skipping ranking system "' + ranking_system + '", not recognized')
+			options.ranking_systems.remove(ranking_system)
 
 	print('Running', tournaments, 'tournaments, all with', matches_per_team, 'matches each for', teams, 'teams, using the', options.ranking_systems, 'TBP method(s)')
 
@@ -54,24 +56,17 @@ def handle_args():
 		print()
 	else:
 		print('Winner-take-all is DISABLED\n')
-	
-	random_TBP = False
-	if (options.ranking_system == "random"):
-		# run tournament with current system to speed through the cascading if/elif in Team.py,
-		#  but then assign random TBP at the end
-		options.ranking_system = "current"
-		random_TBP = True
 
 	if (matches_per_team >= 7):
 		options.subtract_second_least_match = True
 	
-	return teams, matches_per_team, tournaments, random_TBP
+	return teams, matches_per_team, tournaments
 
 def main():
 
 	options.init()
 
-	number_of_teams, matches_per_team, tournaments, random_TBP = handle_args()
+	number_of_teams, matches_per_team, tournaments = handle_args()
 
 	# keep track of sum of RMSDs for each tournament,
 	#  then divide by the number of tournaments at the end
@@ -85,49 +80,35 @@ def main():
 	total_ceiling_hits = {}
 
 	# initialize lists to track the sum of RMSDs outside the main nested loop
-	for ranking_system in options.ranking_systems.split(','):
+	for ranking_system in options.ranking_systems:
 		sum_of_RMSDs_all_teams[ranking_system] = 0
 		sum_of_RMSDs_top_4_teams[ranking_system] = 0
 		total_ceiling_hits[ranking_system] = 0
 
 	# declare eventual Tournament object outside for loop so the last tournament's values can be accessed
-	test_tournament = -1
+	test_tournament = None
 
 	# start execution time timer
 	start = datetime.datetime.now()
 
+	time_spent_scheduling = datetime.timedelta(0)
+
 	for i in range(0, tournaments):
 		test_tournament = Tournament(number_of_teams, matches_per_team)
 
+		schedule_creation_start = datetime.datetime.now()
+
 		while not test_tournament.create_match_schedule(): continue
+
+		time_spent_scheduling += datetime.datetime.now() - schedule_creation_start
 
 		test_tournament.run_tournament()
 
-		for ranking_system in options.ranking_systems.split(','):
+		for ranking_system in options.ranking_systems:
 
-			options.ranking_system = ranking_system
-
-			random_TBP = False
-
-			# TODO move outside computation loop
-			if not (ranking_system == "current" or ranking_system == "sum" or ranking_system == "yours" or ranking_system == "opr" or ranking_system == "u_plus_lose" or ranking_system == "inv_opr" or ranking_system == "random" or ranking_system == "new2019"):
-				print('provided ranking system "' + str(ranking_system) + '" not recognized, options are "current", "sum", "yours", "opr", "u_plus_lose", "inv_opr", "random", or "new2019".\nSkipping to next ranking system...')
-				continue
-
-			# TODO may not be needed after cascading if/elif is removed
-			if (ranking_system == "random"):
-				# run tournament with current system to speed through the cascading if/elif in Team.py,
-				#  but then assign random TBP at the end
-				ranking_system = "current"
-				random_TBP = True
+			options.current_ranking_system = ranking_system
 
 			test_tournament.reassign_tbp()
-
-			# TODO IDEA move to above function?
-			# if needed, assign random TBP
-			if (random_TBP):
-				for t in test_tournament.teams:
-					t.tp = int(random.random() * 1000)
 
 			test_tournament.rank()
 
@@ -144,22 +125,23 @@ def main():
 				if (expected_rank < 5):
 					sum_of_squared_residuals_top_4 += squared_residual
 
-			sum_of_RMSDs_all_teams[options.ranking_system] += math.sqrt(sum_of_squared_residuals_all/(number_of_teams - 1))
-			sum_of_RMSDs_top_4_teams[options.ranking_system] += math.sqrt(sum_of_squared_residuals_top_4/(4 - 1)) # use '4 - 1' instead of 3 to mirror line above
+			sum_of_RMSDs_all_teams[ranking_system] += math.sqrt(sum_of_squared_residuals_all/(number_of_teams - 1))
+			sum_of_RMSDs_top_4_teams[ranking_system] += math.sqrt(sum_of_squared_residuals_top_4/(4 - 1)) # use '4 - 1' instead of 3 to mirror line above
 
-			total_ceiling_hits[options.ranking_system] += test_tournament.ceiling_hits
+			total_ceiling_hits[ranking_system] += test_tournament.ceiling_hits
 
 	# stop execution time timer
 	end = datetime.datetime.now()
 
 	execution_time = end - start
 	# assume execution_time.days is 0
-	print('execution time:', execution_time.seconds + (execution_time.microseconds / 1e6), 'seconds')
+	human_readable_execution_time = execution_time.seconds + (execution_time.microseconds / 1e6)
+	print('execution time:', human_readable_execution_time, 'seconds')
+
+	time_spent_scheduling = time_spent_scheduling.seconds + (time_spent_scheduling.microseconds / 1e6)
+	print('scheduling time as % of execution time:', time_spent_scheduling / human_readable_execution_time)
 	
-	for system in options.ranking_systems.split(','):
-		if not(system in sum_of_RMSDs_all_teams):
-			print ('\n\nSystem "' + system + '" not found, skipping...')
-			continue
+	for system in options.ranking_systems:
 		print("\n\nResults for '" + system + "' ranking system:")
 	
 		print('\nRMSD for all teams:', sum_of_RMSDs_all_teams.get(system) / tournaments)

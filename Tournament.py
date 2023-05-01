@@ -1,8 +1,10 @@
-import random
-import numpy as np
-
 from Team import Team
 from Match import Match
+
+import options
+
+import random
+import numpy as np
 
 class Tournament:
 	
@@ -208,7 +210,13 @@ class Tournament:
 			t.reset()
 	
 	def reassign_tbp(self):
+		if options.current_ranking_system == 'random':
+			for t in self.teams:
+				t.tp = int(random.random() * 1000)
+			return
+		
 		for t in self.teams:
 			t.reset_tbp()
+
 		for m in self.matches:
 		    m.reassign_tbp()
