@@ -1,5 +1,4 @@
 import random
-import time
 import numpy as np
 
 from Team import Team
