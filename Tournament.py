@@ -14,6 +14,17 @@ class Tournament:
 	ceiling_hits = 0
 	
 	def __init__(self, teams, matches_per_team):
+
+		# tunable parameter added to the current match number that the scheduler is trying to schedule
+		#  during refactoring, all scheduling resets happened when scheduling the last four matches
+		#  however, some failures (i.e. picking a blue team that is already on the match's red alliance)
+		#  can happen at any point in the scheduling process
+		self.BASE_FAILURE_RESILIENCE = 5
+		'''self.red1_failures = []
+		self.red2_failures = []
+		self.blue1_failures = []
+		self.blue2_failures = []'''
+
 		# set up the array of teams, which will also keep track of rankings
 		self.teams = []
 		if isinstance(teams, int):
@@ -31,55 +42,64 @@ class Tournament:
 		self.matches = []
 	
 	def create_match_schedule(self):
+		# use a list of teams that have not yet been scheduled for all of their matches
+		#  when a team is scheduled for its final match, remove it from this list
+		#  .copy is used so thet the original list is not modified
+		available_teams = self.teams.copy()
+
 		for n in range(1, self.number_of_matches + 1):
-			red1 = random.choice(self.teams)
+			red1 = random.choice(available_teams)
 			
 			failures = 0
 			
-			while (red1.matches_scheduled >= self.matches_per_team):
+			'''while (red1.matches_scheduled >= self.matches_per_team):
 				#print('red1:  ' + red1.name + ' has already been scheduled for ' + str(red1.matches_scheduled) + ' matches')
 				failures += 1
-				#if failures > len(self.teams):
-				if failures > 3 * len(self.teams):
+				if failures > self.FAILURE_RESILIENCE:
 					self.reset()
 					return False
-				red1 = random.choice(self.teams)
-			#print('red1  FINALIZED:', red1.name)
+				red1 = random.choice(available_teams)
+			#print('red1  FINALIZED:', red1.name)'''
 			
 			assert red1.matches_scheduled < self.matches_per_team
 			red1.matches_scheduled += 1
+			if (red1.matches_scheduled == self.matches_per_team): available_teams.remove(red1)
+			#self.red1_failures.append(failures)
 			
-			red2 = random.choice(self.teams)
+			red2 = random.choice(available_teams)
 			
 			failures = 0
 			
 			# check that there is such a team before entering the while loop
-			while (red2.matches_scheduled >= self.matches_per_team or red2.number in red1.past_partners):
+			#while (red2.matches_scheduled >= self.matches_per_team or red2.number in red1.past_partners):
+			while (red2.number in red1.past_partners):
 				'''if (red2.matches_scheduled >= self.matches_per_team):
 					print('red2:  ' + red2.name + ' has already been scheduled for ' + str(red2.matches_scheduled) + ' matches')
 				else:
 					print('red2:  ' + red2.name + ' has already partnered with ' + red1.name)'''
 				failures += 1
-				#if failures > len(self.teams):
-				if failures > 3 * len(self.teams):
+				if failures > self.BASE_FAILURE_RESILIENCE + n:
 					self.reset()
 					return False
-				red2 = random.choice(self.teams)
+				red2 = random.choice(available_teams)
 			#print('red2  FINALIZED:', red2.name)
 			
 			assert red2.matches_scheduled < self.matches_per_team
 			assert red1.number != red2.number
 			red2.matches_scheduled += 1
+			if (red2.matches_scheduled == self.matches_per_team): available_teams.remove(red2)
+			#self.red2_failures.append(failures)
 			
 			red1.past_partners.append(red2.number)
 			red2.past_partners.append(red1.number)
 			
-			blue1 = random.choice(self.teams)
+			blue1 = random.choice(available_teams)
 			
 			failures = 0
 			
 			# check that there is such a team before entering the while loop
-			while (blue1.matches_scheduled >= self.matches_per_team or blue1.number in red1.past_opponents or blue1.number in red2.past_opponents):
+			#while (blue1.matches_scheduled >= self.matches_per_team or blue1.number in red1.past_opponents or blue1.number in red2.past_opponents):
+			while (blue1.number in red1.past_opponents or blue1.number in red2.past_opponents):
 				'''if (blue1.matches_scheduled >= self.matches_per_team):
 					print('blue1: ' + blue1.name + ' has already been scheduled for ' + str(blue1.matches_scheduled) + ' matches')
 				elif (blue1.number in red1.past_opponents):
@@ -87,24 +107,25 @@ class Tournament:
 				else:
 					print('blue1: ' + blue1.name + ' has already played against ' + red2.name)'''
 				failures += 1
-				#if failures > len(self.teams):
-				if failures > 3 * len(self.teams):
+				if failures > self.BASE_FAILURE_RESILIENCE + n:
 					self.reset()
 					return False
-				blue1 = random.choice(self.teams)
+				blue1 = random.choice(available_teams)
 			#print('blue1 FINALIZED:', blue1.name)
 			
 			assert blue1.matches_scheduled < self.matches_per_team
 			assert red1.number != blue1.number
 			assert red2.number != blue1.number
 			blue1.matches_scheduled += 1
+			if (blue1.matches_scheduled == self.matches_per_team): available_teams.remove(blue1)
+			#self.blue1_failures.append(failures)
 			
-			blue2 = random.choice(self.teams)
+			blue2 = random.choice(available_teams)
 			
 			failures = 0
 			
-			# check that there is such a team before entering the while loop
-			while (blue2.matches_scheduled >= self.matches_per_team or blue2.number in red1.past_opponents or blue2.number in red2.past_opponents or blue2.number in blue1.past_partners):
+			#while (blue2.matches_scheduled >= self.matches_per_team or blue2.number in red1.past_opponents or blue2.number in red2.past_opponents or blue2.number in blue1.past_partners):
+			while (blue2.number in red1.past_opponents or blue2.number in red2.past_opponents or blue2.number in blue1.past_partners):
 				'''if (blue2.matches_scheduled >= self.matches_per_team):
 					print('blue2: ' + blue2.name + ' has already been scheduled for ' + str(blue2.matches_scheduled) + ' matches')
 				elif (blue2.number in red1.past_opponents):
@@ -114,11 +135,10 @@ class Tournament:
 				else:
 					print('blue2: ' + blue2.name + ' has already partnered with ' + blue1.name)'''
 				failures += 1
-				#if failures > len(self.teams):
-				if failures > 3 * len(self.teams):
+				if failures > self.BASE_FAILURE_RESILIENCE + n:
 					self.reset()
 					return False
-				blue2 = random.choice(self.teams)
+				blue2 = random.choice(available_teams)
 			#print('blue2 FINALIZED:', blue2.name)
 			
 			assert blue2.matches_scheduled < self.matches_per_team
@@ -126,6 +146,8 @@ class Tournament:
 			assert red2.number != blue2.number
 			assert blue1.number != blue2.number
 			blue2.matches_scheduled += 1
+			if (blue2.matches_scheduled == self.matches_per_team): available_teams.remove(blue2)
+			#self.blue2_failures.append(failures)
 			
 			blue1.past_partners.append(blue2.number)
 			blue2.past_partners.append(blue1.number)
@@ -145,7 +167,9 @@ class Tournament:
 			m = Match([red1, red2], [blue1, blue2], n)
 			
 			self.matches.append(m)
-			
+
+		#self.report_scheduling_failures()
+
 		return True
 	
 	def generate_n_teams(self, n):
@@ -204,10 +228,18 @@ class Tournament:
 	
 	# mostly used by create_match_schedule to restart schedule generation if it gets stuck
 	def reset(self):
+		#print('failure while creating match', len(self.matches) + 1, 'of', self.number_of_matches)
+		#self.report_scheduling_failures()
+
 		self.ceiling_hits = 0
 		self.matches = []
 		for t in self.teams:
 			t.reset()
+		
+		'''self.red1_failures = []
+		self.red2_failures = []
+		self.blue1_failures = []
+		self.blue2_failures = []'''
 	
 	def reassign_tbp(self):
 		if options.current_ranking_system == 'random':
@@ -219,4 +251,11 @@ class Tournament:
 			t.reset_tbp()
 
 		for m in self.matches:
-		    m.reassign_tbp()
+			m.reassign_tbp()
+
+	def report_scheduling_failures(self):
+		pass
+		'''print('red1 failures: ', self.red1_failures)
+		print('red2 failures: ', self.red2_failures)
+		print('blue1 failures:', self.blue1_failures)
+		print('blue2 failures:', self.blue2_failures)'''
