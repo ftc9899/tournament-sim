@@ -1,6 +1,6 @@
 def init():
 	global ranking_systems
-	ranking_systems = ["current"]
+	ranking_systems = ["new2019"]
 	
 	global current_ranking_system
 	current_ranking_system = "none"
