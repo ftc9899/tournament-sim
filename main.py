@@ -88,19 +88,24 @@ def main():
 	# declare eventual Tournament object outside for loop so the last tournament's values can be accessed
 	test_tournament = None
 
+	# keep track of time spent scheduling
+	time_spent_scheduling = datetime.timedelta(0)
+
 	# start execution time timer
 	start = datetime.datetime.now()
 
-	time_spent_scheduling = datetime.timedelta(0)
+	#scheduling_restarts = 0
 
 	for i in range(0, tournaments):
 		test_tournament = Tournament(number_of_teams, matches_per_team)
 
 		schedule_creation_start = datetime.datetime.now()
 
-		while not test_tournament.create_match_schedule(): continue
+		while not test_tournament.create_match_schedule(): continue #scheduling_restarts += 1
 
 		time_spent_scheduling += datetime.datetime.now() - schedule_creation_start
+
+		#test_tournament.report_scheduling_failures()
 
 		test_tournament.run_tournament()
 
@@ -132,14 +137,6 @@ def main():
 
 	# stop execution time timer
 	end = datetime.datetime.now()
-
-	execution_time = end - start
-	# assume execution_time.days is 0
-	human_readable_execution_time = execution_time.seconds + (execution_time.microseconds / 1e6)
-	print('execution time:', human_readable_execution_time, 'seconds')
-
-	time_spent_scheduling = time_spent_scheduling.seconds + (time_spent_scheduling.microseconds / 1e6)
-	print('scheduling time as % of execution time:', time_spent_scheduling / human_readable_execution_time)
 	
 	for system in options.ranking_systems:
 		print("\n\nResults for '" + system + "' ranking system:")
@@ -148,6 +145,15 @@ def main():
 		print('RMSD for top 4 teams (by OPR):', sum_of_RMSDs_top_4_teams.get(system) / tournaments)
 		if(options.score_ceiling != -1):
 			print('Total ceiling hits / total number of matches:', total_ceiling_hits.get(system) / (tournaments * test_tournament.number_of_matches))
+
+	execution_time = end - start
+	# assume execution_time.days is 0
+	human_readable_execution_time = execution_time.seconds + (execution_time.microseconds / 1e6)
+	print('execution time: %0.6f seconds' % (human_readable_execution_time))
+
+	time_spent_scheduling = time_spent_scheduling.seconds + (time_spent_scheduling.microseconds / 1e6)
+	print('scheduling time was %0.3f %% of execution time' % ((time_spent_scheduling / human_readable_execution_time) * 100))
+	#print('total scheduling restarts:', scheduling_restarts)
 
 if (__name__ == "__main__"):
 	main()
