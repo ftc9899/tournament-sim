@@ -37,9 +37,12 @@ class Tournament:
 		#TODO: check that with the number of teams given, the requested amount of
 		#       matches per team can be played without conflicts'''
 		
-		self.number_of_matches = len(self.teams) * self.matches_per_team // 4
+		self.number_of_matches = self.calculate_number_of_matches(len(self.teams), matches_per_team)
 		
 		self.matches = []
+	
+	def calculate_number_of_matches(self, t, m):
+		return t * m // 4
 	
 	def create_match_schedule(self):
 		# use a list of teams that have not yet been scheduled for all of their matches
@@ -241,7 +244,7 @@ class Tournament:
 		self.blue1_failures = []
 		self.blue2_failures = []'''
 	
-	def reassign_tbp(self):
+	'''def reassign_tbp(self):
 		if options.current_ranking_system == 'random':
 			for t in self.teams:
 				t.tp = int(random.random() * 1000)
@@ -251,7 +254,21 @@ class Tournament:
 			t.reset_tbp()
 
 		for m in self.matches:
-			m.reassign_tbp()
+			m.reassign_tbp()'''
+	
+	def reassign_tbp(self, ranking_system = None):
+		if ranking_system == None: ranking_system = options.current_ranking_system
+
+		if ranking_system == 'random':
+			for t in self.teams:
+				t.tp = int(random.random() * 1000)
+			return
+		
+		for t in self.teams:
+			t.reset_tbp()
+
+		for m in self.matches:
+			m.reassign_tbp(ranking_system)
 
 	def report_scheduling_failures(self):
 		pass

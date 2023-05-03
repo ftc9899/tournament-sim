@@ -1,5 +1,3 @@
-import options
-
 import random
 
 TBP_METHOD_CALCULATIONS_FOR_WINNING_TEAM = {
@@ -85,18 +83,7 @@ class Team:
 		return not self.__eq__(other)
 	
 	def get_tp(self):
-		if (options.current_ranking_system != "new2019"):
-			return self.tp
-		
-		result = self.tp
-		
-		if (self.least_tp >= 0):
-			result -= self.least_tp
-		
-		if (options.subtract_second_least_match and self.second_least_tp >= 0):
-			result -= self.second_least_tp
-		
-		return result
+		return self.tp
 	
 	def get_points(self):
 		#return self.opr
@@ -113,13 +100,31 @@ class Team:
 	def win(self, w_points, l_points, tbp_method):
 		self.rp += 2
 		self.tp += eval(TBP_METHOD_CALCULATIONS_FOR_WINNING_TEAM[tbp_method])
+
+		if tbp_method == 'new2019':
+			if (self.least_tp == -1 or l_points < self.least_tp):
+				self.least_tp = l_points
+			elif (self.second_least_tp == -1 or l_points < self.second_least_tp):
+				self.second_least_tp = l_points
 	
 	def lose(self, w_points, l_points, tbp_method):
 		self.tp += eval(TBP_METHOD_CALCULATIONS_FOR_LOSING_TEAM[tbp_method])
+
+		if tbp_method == 'new2019':
+			if (self.least_tp == -1 or l_points < self.least_tp):
+				self.least_tp = l_points
+			elif (self.second_least_tp == -1 or l_points < self.second_least_tp):
+				self.second_least_tp = l_points
 	
 	def tie(self, w_points, l_points, tbp_method):
 		self.rp += 1
 		self.tp += eval(TBP_METHOD_CALCULATIONS_FOR_WINNING_TEAM[tbp_method])
+
+		if tbp_method == 'new2019':
+			if (self.least_tp == -1 or l_points < self.least_tp):
+				self.least_tp = l_points
+			elif (self.second_least_tp == -1 or l_points < self.second_least_tp):
+				self.second_least_tp = l_points
 	
 	def reset(self):
 		self.rp = 0

@@ -100,7 +100,7 @@ class Match:
 		print('Winning score: ' + str(self.win_score) + ' (teams ' + str(self.win1) + ' and ' + str(self.win2) + ')')
 		print('Losing score:  ' + str(self.lose_score) + ' (teams ' + str(self.lose1) + ' and ' + str(self.lose2) + ')\n')
 	
-	def _give_points(self):
+	'''def _give_points(self):
 		if (self.winner == "tie"):
 			self.red1.tie(self.win_score, self.lose_score, options.current_ranking_system)
 			self.red2.tie(self.win_score, self.lose_score, options.current_ranking_system)
@@ -125,7 +125,39 @@ class Match:
 			self.red1.lose(self.win_score, self.lose_score, options.current_ranking_system)
 			self.red2.lose(self.win_score, self.lose_score, options.current_ranking_system)
 			self.blue1.win(self.win_score, self.lose_score, options.current_ranking_system)
-			self.blue2.win(self.win_score, self.lose_score, options.current_ranking_system)
+			self.blue2.win(self.win_score, self.lose_score, options.current_ranking_system)'''
 	
-	def reassign_tbp(self):
-		self._give_points()
+	def _give_points(self, ranking_system = None):
+		if ranking_system == None: ranking_system = options.current_ranking_system
+
+		if (self.winner == "tie"):
+			self.red1.tie(self.win_score, self.lose_score, ranking_system)
+			self.red2.tie(self.win_score, self.lose_score, ranking_system)
+			self.blue1.tie(self.win_score, self.lose_score, ranking_system)
+			self.blue2.tie(self.win_score, self.lose_score, ranking_system)
+			return
+		
+		# if winner-take-all is enabled, increase the win score by a specified percentage
+		#  and decrease the lose score by the same specified percentage
+		# Do this here because a tie should not be affected by this
+		if (options.wta_proportion is not None):
+			self.win_score *= (1 + options.wta_proportion)
+			self.lose_score *= (1 - options.wta_proportion)
+		
+		if (self.winner == "red"):
+			self.red1.win(self.win_score, self.lose_score, ranking_system)
+			self.red2.win(self.win_score, self.lose_score, ranking_system)
+			self.blue1.lose(self.win_score, self.lose_score, ranking_system)
+			self.blue2.lose(self.win_score, self.lose_score, ranking_system)
+			
+		else:
+			self.red1.lose(self.win_score, self.lose_score, ranking_system)
+			self.red2.lose(self.win_score, self.lose_score, ranking_system)
+			self.blue1.win(self.win_score, self.lose_score, ranking_system)
+			self.blue2.win(self.win_score, self.lose_score, ranking_system)
+	
+	'''def reassign_tbp(self):
+		self._give_points()'''
+	
+	def reassign_tbp(self, ranking_system = None):
+		self._give_points(ranking_system)

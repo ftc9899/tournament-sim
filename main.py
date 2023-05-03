@@ -55,7 +55,7 @@ def handle_args():
 			print('WARNING: Winner-take-all proportion is set to', str(options.wta_proportion) + ', an absolute value greater than 100%')
 		print()
 	else:
-		print('Winner-take-all is DISABLED\n')
+		print('Winner-take-all is DISABLED')
 
 	if (matches_per_team >= 7):
 		options.subtract_second_least_match = True
@@ -64,7 +64,7 @@ def handle_args():
 
 def main():
 
-	options.init()
+	#options.init()
 
 	number_of_teams, matches_per_team, tournaments = handle_args()
 
@@ -114,6 +114,11 @@ def main():
 			options.current_ranking_system = ranking_system
 
 			test_tournament.reassign_tbp()
+			
+			if ranking_system == 'new2019':
+				for t in test_tournament.teams:
+					t.tp -= t.least_tp
+					if (options.subtract_second_least_match): t.tp -= t.second_least_tp
 
 			test_tournament.rank()
 
@@ -139,7 +144,7 @@ def main():
 	end = datetime.datetime.now()
 	
 	for system in options.ranking_systems:
-		print("\n\nResults for '" + system + "' ranking system:")
+		print("\nResults for '" + system + "' ranking system:")
 	
 		print('\nRMSD for all teams:', sum_of_RMSDs_all_teams.get(system) / tournaments)
 		print('RMSD for top 4 teams (by OPR):', sum_of_RMSDs_top_4_teams.get(system) / tournaments)
@@ -149,7 +154,7 @@ def main():
 	execution_time = end - start
 	# assume execution_time.days is 0
 	human_readable_execution_time = execution_time.seconds + (execution_time.microseconds / 1e6)
-	print('execution time: %0.6f seconds' % (human_readable_execution_time))
+	print('\nexecution time: %0.6f seconds' % (human_readable_execution_time))
 
 	time_spent_scheduling = time_spent_scheduling.seconds + (time_spent_scheduling.microseconds / 1e6)
 	print('scheduling time was %0.3f %% of execution time' % ((time_spent_scheduling / human_readable_execution_time) * 100))
